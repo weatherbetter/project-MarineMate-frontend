@@ -52,7 +52,7 @@ function Dashboard() {
         ],
         datasets: [
             {
-                label: "Mobile apps",
+                label: "빈도",
                 color: "info",
                 data: [17, 8, 20, 13, 30, 77, 262, 165, 37, 47, 15, 17],
             },
@@ -117,8 +117,7 @@ function Dashboard() {
                                         fontWeight="regular"
                                         color="text"
                                     >
-                                        지역의 수난사고 현황을 확인할 수 있습니다.
-                                        (2021년 기준)
+                                        지역의 수난사고 현황을 확인할 수 있습니다. (2021년 기준)
                                     </SoftTypography>
                                 </SoftBox>
                             </SoftBox>
@@ -153,7 +152,7 @@ function Dashboard() {
                                     ],
                                     datasets: [
                                         {
-                                            label: "Sales by age",
+                                            label: "빈도",
                                             color: "dark",
                                             data: [344, 244, 56, 42, 13, 5, 3, 1],
                                         },
@@ -209,7 +208,7 @@ function Dashboard() {
                                     ],
                                     datasets: [
                                         {
-                                            label: "Sales by age",
+                                            label: "빈도",
                                             color: "dark",
                                             data: [265, 134, 92, 89, 54, 44, 11, 8, 6, 4],
                                         },
@@ -238,7 +237,7 @@ function Dashboard() {
                                     ],
                                     datasets: [
                                         {
-                                            label: "Sales by age",
+                                            label: "빈도",
                                             color: "dark",
                                             data: [708, 99, 53, 16, 14],
                                         },
