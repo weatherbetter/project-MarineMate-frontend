@@ -17,102 +17,175 @@ Coded by www.creative-tim.com
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import ProfilesList from "examples/Lists/ProfilesList";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-import PlaceholderCard from "examples/Cards/PlaceholderCard";
 
 // Overview page components
 import Header from "layouts/beach/components/Header";
-import PlatformSettings from "layouts/beach/components/PlatformSettings";
-
-// Data
-// import profilesListData from "layouts/beach/data/profilesListData";
 
 // Images
 import borders from "assets/theme/base/borders";
-import { Map, MapMarker, ZoomControl, MapTypeControl } from "react-kakao-maps-sdk";
+import geojson from "assets/SIDO_MAP_2022.json";
+import React, { useEffect } from "react";
 
 import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 
 function Beach() {
-  const { borderWidth, borderColor } = borders;
-  const profilesListData = [
-    {
-      name: "해운대 해수욕장",
-      description: "Hi! I need more information..",
-      action: {
-        type: "internal",
-        route: "/pages/profile/profile-overview",
-        color: "info",
-        label: "check",
-      },
-    },
-    {
-      name: "강원도 해수욕장",
-      description: "Awesome work, can you..",
-      action: {
-        type: "internal",
-        route: "/pages/profile/profile-overview",
-        color: "info",
-        label: "check",
-      },
-    },
-    {
-      name: "강원도 해수욕장",
-      description: "Awesome work, can you..",
-      action: {
-        type: "internal",
-        route: "/pages/profile/profile-overview",
-        color: "info",
-        label: "check",
-      },
-    },
-  ];
-  const { kakao } = window;
-  return (
-    <DashboardLayout>
-      <Header />
-      <SoftBox mt={5} mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={8}>
-            <Card sx={{ height: "100%" }}>
-              <Map
-                center={{ lat: 33.5563, lng: 126.79581 }}
-                style={{ width: "100%", height: "360px" }}
-              >
-                <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
-                </MapMarker>
-                <ZoomControl position={kakao.maps.ControlPosition.TOPRIGHT} />
-                <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
-              </Map>
-            </Card>
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <ProfilesList title="해수욕장 추천 리스트" profiles={profilesListData} />
-          </Grid>
-        </Grid>
-      </SoftBox>
-      <SoftBox mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={12}>
-            <BuildByDevelopers />
-          </Grid>
-        </Grid>
-      </SoftBox>
-    </DashboardLayout>
-  );
+    const { kakao } = window;
+    const { borderWidth, borderColor } = borders;
+    const profilesListData = [
+        {
+            name: "해운대 해수욕장",
+            description: "Hi! I need more information..",
+            action: {
+                type: "internal",
+                route: "/pages/profile/profile-overview",
+                color: "info",
+                label: "check",
+            },
+        },
+        {
+            name: "강원도 해수욕장",
+            description: "Awesome work, can you..",
+            action: {
+                type: "internal",
+                route: "/pages/profile/profile-overview",
+                color: "info",
+                label: "check",
+            },
+        },
+        {
+            name: "강원도 해수욕장",
+            description: "Awesome work, can you..",
+            action: {
+                type: "internal",
+                route: "/pages/profile/profile-overview",
+                color: "info",
+                label: "check",
+            },
+        },
+    ];
+
+    useEffect(() => {
+        let data = geojson.features;
+        let coordinates = []; //좌표 저장 배열
+        let name = ""; //행정구 이름
+
+        let polygons = [];
+
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+            center: new kakao.maps.LatLng(36.564, 128.043),
+            level: 13,
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+
+        const scores = {
+            서울특별시: 90,
+            경기도: 60,
+            부산광역시: 90,
+            강원도: 100,
+            충청북도: 40,
+            인천광역시: 10,
+        };
+
+        const displayMultiPolygon = (multiCoordinates, name) => {
+            multiCoordinates.forEach((coordinates) => {
+                const path = coordinates[0].map(
+                    (coordinate) => new kakao.maps.LatLng(coordinate[1], coordinate[0])
+                );
+                const polygon = new kakao.maps.Polygon({
+                    map: map,
+                    path: path,
+                    strokeWeight: 1,
+                    strokeColor: "#fff",
+                    strokeOpacity: 0.8,
+                    strokeStyle: "solid",
+                    fillColor: "#00FF00",
+                    fillOpacity: 0.7,
+                });
+                polygons.push(polygon);
+            });
+        };
+
+        const displayArea = (coordinates, name) => {
+            let path = [];
+            let points = [];
+
+            let fillColor = "#FFFF00";
+            if (scores[name]) {
+                if (scores[name] >= 90) {
+                    fillColor = "#FF0000"; // 빨간색
+                } else if (scores[name] >= 60) {
+                    fillColor = "#FFFF00"; // 노란색
+                } else {
+                    fillColor = "#FF0000"; // 초록색
+                }
+            }
+
+            coordinates[0].forEach((coordinate) => {
+                let point = {};
+                point.x = coordinate[1];
+                point.y = coordinate[0];
+                points.push(point);
+                path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
+            });
+
+            let polygon = new kakao.maps.Polygon({
+                map: map,
+                path: path, // 그려질 다각형의 좌표 배열입니다
+                strokeWeight: 2, // 선의 두께입니다
+                strokeColor: "#fff", // 선의 색깔입니다
+                strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: "solid", // 선의 스타일입니다
+                fillColor: fillColor, // 채우기 색깔입니다
+                fillOpacity: 0.7, // 채우기 불투명도 입니다
+            });
+
+            polygons.push(polygon);
+        };
+
+        data.forEach((val) => {
+            coordinates = val.geometry.coordinates;
+            name = val.properties.CTP_KOR_NM;
+
+            if (val.geometry.type === "Polygon") {
+                displayArea(coordinates, name);
+            } else if (val.geometry.type === "MultiPolygon") {
+                displayMultiPolygon(coordinates, name);
+            }
+        });
+    }, []);
+
+    return (
+        <DashboardLayout>
+            <Header />
+            <SoftBox mt={5} mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6} xl={7}>
+                        <Card>
+                            <div id="map" style={{ width: "100%", height: "400px" }}></div>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={6}  xl={5}>
+                        <ProfilesList title="해수욕장 추천 리스트" profiles={profilesListData} />
+                    </Grid>
+                </Grid>
+            </SoftBox>
+            <SoftBox mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} lg={12}>
+                        <BuildByDevelopers />
+                    </Grid>
+                </Grid>
+            </SoftBox>
+        </DashboardLayout>
+    );
 }
 
 export default Beach;
