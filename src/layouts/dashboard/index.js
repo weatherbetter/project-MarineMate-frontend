@@ -79,11 +79,6 @@ function Dashboard() {
             <SoftBox>
                 <Card
                     sx={{
-                        // backdropFilter: `saturate(200%) blur(30px)`,
-                        // backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
-                        // boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
-                        // position: "relative",
-                        // mt: -8,
                         mx: 3,
                         py: 2,
                         px: 2,
