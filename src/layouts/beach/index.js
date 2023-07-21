@@ -86,12 +86,16 @@ function Beach() {
         const map = new kakao.maps.Map(mapContainer, mapOption);
 
         const scores = {
-            서울특별시: 90,
-            경기도: 60,
-            부산광역시: 90,
-            강원도: 100,
-            충청북도: 40,
-            인천광역시: 10,
+            부산광역시: 2,
+            서울특별시: 3,
+            강원도: 2,
+            경상북도: 1,
+            충청남도: 2,
+            전라남도: 2,
+            제주특별자치도: 2,
+            경상남도: 2,
+            전라북도: 2,
+            울산광역시:1,
         };
 
         const displayMultiPolygon = (multiCoordinates, name) => {
@@ -99,6 +103,18 @@ function Beach() {
                 const path = coordinates[0].map(
                     (coordinate) => new kakao.maps.LatLng(coordinate[1], coordinate[0])
                 );
+
+                let fillColor = "#fff";
+                if (scores[name]) {
+                    if (scores[name] == 3) {
+                        fillColor = "#FF0000"; // 빨간색
+                    } else if (scores[name] == 2) {
+                        fillColor = "#FFFF00"; // 노란색
+                    } else if (scores[name] == 1) {
+                        fillColor = "#24df1a"; // 초록색
+                    }
+                }
+
                 const polygon = new kakao.maps.Polygon({
                     map: map,
                     path: path,
@@ -106,7 +122,7 @@ function Beach() {
                     strokeColor: "#fff",
                     strokeOpacity: 0.8,
                     strokeStyle: "solid",
-                    fillColor: "#00FF00",
+                    fillColor: fillColor,
                     fillOpacity: 0.7,
                 });
                 polygons.push(polygon);
@@ -117,16 +133,16 @@ function Beach() {
             let path = [];
             let points = [];
 
-            let fillColor = "#FFFF00";
-            if (scores[name]) {
-                if (scores[name] >= 90) {
-                    fillColor = "#FF0000"; // 빨간색
-                } else if (scores[name] >= 60) {
-                    fillColor = "#FFFF00"; // 노란색
-                } else {
-                    fillColor = "#FF0000"; // 초록색
+                let fillColor = "#fff";
+                if (scores[name]) {
+                    if (scores[name] == 3) {
+                        fillColor = "#FF0000"; // 빨간색
+                    } else if (scores[name] == 2) {
+                        fillColor = "#FFFF00"; // 노란색
+                    } else if (scores[name] == 1) {
+                        fillColor = "#24df1a"; // 초록색
+                    }
                 }
-            }
 
             coordinates[0].forEach((coordinate) => {
                 let point = {};
@@ -172,7 +188,7 @@ function Beach() {
                             <div id="map" style={{ width: "100%", height: "400px" }}></div>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={6}  xl={5}>
+                    <Grid item xs={12} md={6} xl={5}>
                         <ProfilesList title="해수욕장 추천 리스트" profiles={profilesListData} />
                     </Grid>
                 </Grid>
