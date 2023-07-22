@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import { useState } from  "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -28,11 +28,21 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import CardMedia from "@mui/material/CardMedia";
 
 function BuildByDevelopers() {
+  // 클릭 이벤트를 위한 상태값 추가
+  const [showProfileInfo, setShowProfileInfo] = useState(false);
+
+  // 클릭 이벤트 처리 함수
+  const handleCheckClick = () => {
+    setShowProfileInfo(!showProfileInfo);
+  };
+
   return (
     <Card>
       <SoftBox p={2}>
         <Grid container spacing={3}>
           <Grid item xs={12} lg={6}>
+            {/* 클릭 시에만 ProfileInfoCard를 출력 */}
+            {showProfileInfo && (
             <ProfileInfoCard
               title="해운대 해수욕장"
               description="해수욕장 설명"
@@ -40,11 +50,14 @@ function BuildByDevelopers() {
                 미세먼지: "보통",
                 수온: "17.77",
                 조위: "83",
-                location: "USA",
+                location: "South Korea",
               }}
               social={[]}
               action={{ route: "", tooltip: "Edit Profile" }}
             />
+            )}
+            {/*클릭 이벤트 버튼 */}
+            <button onClick={handleCheckClick}>Check</button>
           </Grid>
           <Grid item xs={12} lg={6} sx={{ position: "relative", ml: "auto" }}>
             <SoftBox position="relative" width="100%" 

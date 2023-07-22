@@ -31,7 +31,7 @@ import Header from "layouts/beach/components/Header";
 // Images
 import borders from "assets/theme/base/borders";
 import geojson from "assets/SIDO_MAP_2022.json";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 
@@ -70,6 +70,15 @@ function Beach() {
             },
         },
     ];
+
+    // State to hold the selected profile data
+    const [selectedProfile, setSelectedProfile] = useState(null);
+
+    // 클릭 이벤트 처리 함수
+    const handleCheckClick = (profile) => {
+        // Toggle the visibility of ProfileInfoCard
+        setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
+    };
 
     useEffect(() => {
         let data = geojson.features;
@@ -196,7 +205,8 @@ function Beach() {
             <SoftBox mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
-                        <BuildByDevelopers />
+                    {/* Pass the selected profile data to the BuildByDevelopers component */}
+                    <BuildByDevelopers selectedProfile={selectedProfile} onCheckClick={handleCheckClick} />
                     </Grid>
                 </Grid>
             </SoftBox>

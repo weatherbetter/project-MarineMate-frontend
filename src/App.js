@@ -13,6 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import React from "react";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
@@ -47,6 +49,9 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/logo-ct.png";
+
+import Beach from "./layouts/dashboard"; // Beach 컴포넌트를 불러옵니다
+// import BuildByDevelopers from "./layouts/dashboard/components/BuildByDevelopers"; // BeachDescription 컴포넌트를 불러옵니다
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
