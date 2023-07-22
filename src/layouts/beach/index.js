@@ -46,7 +46,7 @@ function Beach() {
                 type: "internal",
                 route: "/pages/profile/profile-overview",
                 color: "info",
-                label: "check",
+                label: "check", 
             },
         },
         {

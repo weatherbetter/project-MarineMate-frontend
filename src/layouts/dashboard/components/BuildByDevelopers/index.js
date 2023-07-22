@@ -56,8 +56,10 @@ function BuildByDevelopers() {
               action={{ route: "", tooltip: "Edit Profile" }}
             />
             )}
-            {/*클릭 이벤트 버튼 */}
-            <button onClick={handleCheckClick}>Check</button>
+              {/* 클릭 이벤트 버튼 */}
+              {selectedProfile && selectedProfile.action.label === "check" && (
+              <button onClick={() => onCheckClick(selectedProfile)}>{selectedProfile.action.label}</button>
+            )}
           </Grid>
           <Grid item xs={12} lg={6} sx={{ position: "relative", ml: "auto" }}>
             <SoftBox position="relative" width="100%" 
