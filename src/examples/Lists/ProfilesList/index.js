@@ -29,65 +29,52 @@ import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
 import SoftBadge from "components/SoftBadge";
 function ProfilesList({ title, profiles }) {
-  const renderProfiles = profiles.map(({ name, description, action }, index) => (
-    <SoftBox key={index} component="li" display="flex" alignItems="center" py={1} mb={1}>
-      <SoftBox mr={2}>
-        <SoftBadge badgeContent={index + 1} container />
-      </SoftBox>
-      <SoftBox
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="center"
-      >
-        <SoftTypography variant="button" fontWeight="medium">
-          {name}
-        </SoftTypography>
-        {/* <SoftTypography variant="caption" color="text">
-          {description}
-        </SoftTypography> */}
-      </SoftBox>
-      <SoftBox ml="auto">
-        {action.type === "internal" ? (
-          <SoftButton component={Link} to={action.route} variant="text" color="info">
-            {action.label}
-          </SoftButton>
-        ) : (
-          <SoftButton
-            component="a"
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="text"
-            color={action.color}
-          >
-            {action.label}
-          </SoftButton>
-        )}
-      </SoftBox>
-    </SoftBox>
-  ));
-
-  return (
-    <Card sx={{ height: "100%" }}>
-      <SoftBox pt={2} px={2}>
-        <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
-          {title}
-        </SoftTypography>
-      </SoftBox>
-      <SoftBox p={2}>
-        <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          {renderProfiles}
+    // const handleWhiteSidenav = () => {
+    //     console.log(1111);
+    // };
+    const renderProfiles = profiles.map(({ name, description, action }, index) => (
+        <SoftBox key={index} component="li" display="flex" alignItems="center" py={1} mb={1}>
+            <SoftBox mr={2}>
+                <SoftBadge badgeContent={index + 1} container />
+            </SoftBox>
+            <SoftBox
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
+                justifyContent="center"
+            >
+                <SoftTypography variant="button" fontWeight="medium">
+                    {name}
+                </SoftTypography>
+            </SoftBox>
+            <SoftBox ml="auto">
+                <SoftButton variant="text" color="info" onClick={action.click} data-name={name}>
+                    {action.label}
+                </SoftButton>
+            </SoftBox>
         </SoftBox>
-      </SoftBox>
-    </Card>
-  );
+    ));
+
+    return (
+        <Card sx={{ height: "100%" }}>
+            <SoftBox pt={2} px={2}>
+                <SoftTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+                    {title}
+                </SoftTypography>
+            </SoftBox>
+            <SoftBox p={2}>
+                <SoftBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
+                    {renderProfiles}
+                </SoftBox>
+            </SoftBox>
+        </Card>
+    );
 }
 
 // Typechecking props for the ProfilesList
 ProfilesList.propTypes = {
-  title: PropTypes.string.isRequired,
-  profiles: PropTypes.arrayOf(PropTypes.object).isRequired,
+    title: PropTypes.string.isRequired,
+    profiles: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ProfilesList;

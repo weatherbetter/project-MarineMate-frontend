@@ -38,35 +38,27 @@ import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 function Beach() {
     const { kakao } = window;
     const { borderWidth, borderColor } = borders;
+    const handleBeach = (e) => {
+        console.log(e.target.dataset.name);
+        // axios 동작 추가
+    };
     const profilesListData = [
         {
             name: "해운대 해수욕장",
             description: "Hi! I need more information..",
             action: {
-                type: "internal",
-                route: "/pages/profile/profile-overview",
                 color: "info",
                 label: "check",
+                click: handleBeach,
             },
         },
         {
             name: "강원도 해수욕장",
             description: "Awesome work, can you..",
             action: {
-                type: "internal",
-                route: "/pages/profile/profile-overview",
                 color: "info",
                 label: "check",
-            },
-        },
-        {
-            name: "강원도 해수욕장",
-            description: "Awesome work, can you..",
-            action: {
-                type: "internal",
-                route: "/pages/profile/profile-overview",
-                color: "info",
-                label: "check",
+                click: handleBeach,
             },
         },
     ];
@@ -87,7 +79,7 @@ function Beach() {
 
         const scores = {
             부산광역시: 2,
-            서울특별시: 3,
+            인천광역시: 3,
             강원도: 2,
             경상북도: 1,
             충청남도: 2,
@@ -95,7 +87,7 @@ function Beach() {
             제주특별자치도: 2,
             경상남도: 2,
             전라북도: 2,
-            울산광역시:1,
+            울산광역시: 1,
         };
 
         const displayMultiPolygon = (multiCoordinates, name) => {
@@ -190,6 +182,15 @@ function Beach() {
                     </Grid>
                     <Grid item xs={12} md={6} xl={5}>
                         <ProfilesList title="해수욕장 추천 리스트" profiles={profilesListData} />
+                    </Grid>
+                </Grid>
+            </SoftBox>
+            <SoftBox mt={5} mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} lg={12}>
+                        <Card>
+                            박스 추가
+                        </Card>
                     </Grid>
                 </Grid>
             </SoftBox>
