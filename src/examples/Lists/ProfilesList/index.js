@@ -13,9 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// react-routers components
-import { Link } from "react-router-dom";
-
 // prop-types is library for typechecking of props
 import PropTypes from "prop-types";
 
@@ -25,13 +22,9 @@ import Card from "@mui/material/Card";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
 import SoftBadge from "components/SoftBadge";
 function ProfilesList({ title, profiles }) {
-    // const handleWhiteSidenav = () => {
-    //     console.log(1111);
-    // };
     const renderProfiles = profiles.map(({ name, description, action }, index) => (
         <SoftBox key={index} component="li" display="flex" alignItems="center" py={1} mb={1}>
             <SoftBox mr={2}>
