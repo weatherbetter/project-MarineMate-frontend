@@ -44,6 +44,7 @@ import Beach from "layouts/beach";
 import Shop from "examples/Icons/Shop";
 import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
+import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 
 const routes = [
     {
@@ -73,6 +74,17 @@ const routes = [
         component: <Beach />,
         noCollapse: true,
     },
+    /***
+    {
+        type: "collapse", 
+        name: "test", 
+        key: "test", 
+        route: "/test", 
+        icon: <SpaceShip size="12px" />,
+        component: <BuildByDevelopers />, 
+        noCollapse: true,
+    }, 
+    ***/
 ];
 
 export default routes;
