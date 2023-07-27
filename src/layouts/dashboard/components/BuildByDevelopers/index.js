@@ -43,6 +43,9 @@ import CardMedia from "@mui/material/CardMedia";
       setShowProfileInfo(!showProfileInfo);
     };
 
+
+
+
   return (
     <Card>
       <SoftBox p={2}>
@@ -65,9 +68,9 @@ import CardMedia from "@mui/material/CardMedia";
             />
             ) : null}
               {/* 클릭 이벤트 버튼 */}
-              {selectedProfile && selectedProfile.action.label === "check" && (
-              <button onClick={() => onCheckClick(selectedProfile)}>{selectedProfile.action.label}</button>
-            )}
+              {/* {selectedProfile && selectedProfile.action.label === "check" && (
+              <button onClick={() => onCheckClick(selectedProfile)}>{selectedProfile.action.label}</button> */}
+            {/* )} */}
           </Grid>
           <Grid item xs={12} lg={6} sx={{ position: "relative", ml: "auto" }}>
             <SoftBox position="relative" width="100%" 

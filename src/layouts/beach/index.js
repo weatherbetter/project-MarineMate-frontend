@@ -38,18 +38,34 @@ import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 function Beach() {
     const { kakao } = window;
     const { borderWidth, borderColor } = borders;
+
+
+    const getData = (action, beachid) => {
+        // axios 호출
+        alert(beachid);
+        
+        // 가져온 데이터를 selectedProfile 상태변수에 설정
+        setSelectedProfile({ title: "a", description: "b", info: { 미세먼지: 'test' }, action})
+
+    }
+
     const profilesListData = [
         {
+            id: 1, 
             name: "해운대 해수욕장",
             description: "Hi! I need more information..",
             action: {
-                type: "internal",
-                route: "/pages/profile/profile-overview",
+                //type: "internal",
+                // route: "./dashboard/components/BuildByDevelopers",
+                //route: "/test",
+                type: "axios", 
+                route: getData,
                 color: "info",
                 label: "check", 
             },
         },
         {
+            id: 2, 
             name: "강원도 해수욕장",
             description: "Awesome work, can you..",
             action: {
@@ -60,6 +76,7 @@ function Beach() {
             },
         },
         {
+            id: 3, 
             name: "강원도 해수욕장",
             description: "Awesome work, can you..",
             action: {

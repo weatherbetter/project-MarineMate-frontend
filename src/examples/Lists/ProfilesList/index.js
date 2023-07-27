@@ -28,8 +28,14 @@ import SoftTypography from "components/SoftTypography";
 import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
 import SoftBadge from "components/SoftBadge";
-function ProfilesList({ title, profiles }) {
-  const renderProfiles = profiles.map(({ name, description, action }, index) => (
+import { useState } from "react";
+function ProfilesList({title, profiles}) {
+  
+
+  const renderProfiles = profiles.map(({ id, name, description, action }, index) => {
+  console.log(action);
+  console.log(typeof action.route);
+   return (
     <SoftBox key={index} component="li" display="flex" alignItems="center" py={1} mb={1}>
       <SoftBox mr={2}>
         <SoftBadge badgeContent={index + 1} container />
@@ -53,6 +59,7 @@ function ProfilesList({ title, profiles }) {
             {action.label}
           </SoftButton>
         ) : (
+          /*
           <SoftButton
             component="a"
             href={action.route}
@@ -63,10 +70,13 @@ function ProfilesList({ title, profiles }) {
           >
             {action.label}
           </SoftButton>
+          */
+          <span onClick={() => action.route(action, id)}>{action.label}</span>
         )}
       </SoftBox>
     </SoftBox>
-  ));
+  );
+});
 
   return (
     <Card sx={{ height: "100%" }}>
