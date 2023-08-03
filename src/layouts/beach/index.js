@@ -35,8 +35,17 @@ import React, { useEffect, useState } from "react";
 
 import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
 
-function Beach() {
-    const { kakao } = window;
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
+
+    function Beach() {
+        const locations = [
+            { title: '카카오', latlng: { lat: 33.450705, lng: 126.570677 } },
+            { title: '생태연못', latlng: { lat: 33.450936, lng: 126.569477 } },
+            { title: '텃밭', latlng: { lat: 33.450879, lng: 126.56994 } },
+            { title: '근린공원', latlng: { lat: 33.451393, lng: 126.570738 } },
+        ];
+        
+        const { kakao } = window;
     const { borderWidth, borderColor } = borders;
     const handleBeach = (e) => {
         console.log(e.target.dataset.name);
@@ -201,6 +210,27 @@ function Beach() {
                     <Grid item xs={12} lg={12}>
                         <Card>
                             박스 추가
+                        </Card>
+                    </Grid>
+                </Grid>
+            </SoftBox>
+            <SoftBox mt={5} mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} lg={12}>
+                        <Card>
+                        <Map center={{ lat:128.960299 , lng: 35.04850497 }} style={{ width: '800px', height: '600px' }} level={3}>
+                            {locations.map((loc, idx) => (
+                                <MapMarker
+                                    key={`${loc.title}-${loc.latlng}`}
+                                    position={loc.latlng}
+                                    image={{
+                                        src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+                                        size: { width: 24, height: 35 },
+                                    }}
+                                    title={loc.title}
+                                />
+                            ))}
+                        </Map>
                         </Card>
                     </Grid>
                 </Grid>
