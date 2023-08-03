@@ -20,7 +20,6 @@ import Card from "@mui/material/Card";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftBadge from "components/SoftBadge";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -35,20 +34,17 @@ import geojson from "assets/SIDO_MAP_2022.json";
 import React, { useEffect, useState } from "react";
 
 import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
-import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
-import markerRed from "assets/marker_red.png";
-import markerGreen from "assets/marker_green.png";
-import markerYellow from "assets/marker_yellow.png";
-import jellyfish from "./data/jellyfish.js"
+
 function Beach() {
-    const locations_specific = jellyfish;
+    const { kakao } = window;
+    const { borderWidth, borderColor } = borders;
     const handleBeach = (e) => {
         console.log(e.target.dataset.name);
         // axios 동작 추가
     };
     const profilesListData = [
         {
-            id: 1,
+            id: 1, 
             name: "해운대 해수욕장",
             description: "Hi! I need more information..",
             action: {
@@ -58,7 +54,7 @@ function Beach() {
             },
         },
         {
-            id: 2,
+            id: 2, 
             name: "강원도 해수욕장",
             description: "Awesome work, can you..",
             action: {
@@ -78,77 +74,111 @@ function Beach() {
         setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
     };
 
-    const scores = {
-        부산광역시: 2,
-        인천광역시: 3,
-        강원도: 2,
-        경상북도: 1,
-        충청남도: 2,
-        전라남도: 2,
-        제주특별자치도: 2,
-        경상남도: 2,
-        전라북도: 2,
-        울산광역시: 1,
-    };
-
-    const EventMarkerContainer = ({ position, content, markerSrc }) => {
-        const map = useMap();
-        const [isVisible, setIsVisible] = useState(false);
-
-        return (
-            <MapMarker
-                position={position}
-                onClick={(marker) => map.panTo(marker.getPosition())}
-                onMouseOver={() => setIsVisible(true)}
-                onMouseOut={() => setIsVisible(false)}
-                image={{
-                    src: markerSrc,
-                    size: { width: 15, height: 16 },
-                }}
-            >
-                {isVisible && (
-                    <div
-                        style={{
-                            // padding: "5px",
-                            // // color: "red",
-                            // borderRadius: "10px",
-                            // backgroundColor: "#fff",
-                        }}
-                    >
-                        {content}
-                    </div>
-                )}
-            </MapMarker>
-        );
-    };
-
-    const markers = locations_specific.map((location) => {
-        const { area, space } = location;
-        const score = scores[area];
-
-        let markerSrc;
-
-        if (score === 3) {
-            markerSrc = markerRed;
-        } else if (score === 2) {
-            markerSrc = markerYellow;
-        } else {
-            markerSrc = markerGreen;
-        }
-
-        const spaceMarkers = space.map((loc) => (
-            <EventMarkerContainer
-                key={`EventMarkerContainer-${loc.latlng.lat}-${loc.latlng.lng}`}
-                position={loc.latlng}
-                content={loc.title}
-                markerSrc={markerSrc}
-            />
-        ));
-        return spaceMarkers;
-    });
-
     useEffect(() => {
-     
+        let data = geojson.features;
+        let coordinates = []; //좌표 저장 배열
+        let name = ""; //행정구 이름
+
+        let polygons = [];
+
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+            center: new kakao.maps.LatLng(36.564, 128.043),
+            level: 13,
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+
+        const scores = {
+            부산광역시: 2,
+            인천광역시: 3,
+            강원도: 2,
+            경상북도: 1,
+            충청남도: 2,
+            전라남도: 2,
+            제주특별자치도: 2,
+            경상남도: 2,
+            전라북도: 2,
+            울산광역시: 1,
+        };
+
+        const displayMultiPolygon = (multiCoordinates, name) => {
+            multiCoordinates.forEach((coordinates) => {
+                const path = coordinates[0].map(
+                    (coordinate) => new kakao.maps.LatLng(coordinate[1], coordinate[0])
+                );
+
+                let fillColor = "#fff";
+                if (scores[name]) {
+                    if (scores[name] == 3) {
+                        fillColor = "#FF0000"; // 빨간색
+                    } else if (scores[name] == 2) {
+                        fillColor = "#FFFF00"; // 노란색
+                    } else if (scores[name] == 1) {
+                        fillColor = "#24df1a"; // 초록색
+                    }
+                }
+
+                const polygon = new kakao.maps.Polygon({
+                    map: map,
+                    path: path,
+                    strokeWeight: 1,
+                    strokeColor: "#fff",
+                    strokeOpacity: 0.8,
+                    strokeStyle: "solid",
+                    fillColor: fillColor,
+                    fillOpacity: 0.7,
+                });
+                polygons.push(polygon);
+            });
+        };
+
+        const displayArea = (coordinates, name) => {
+            let path = [];
+            let points = [];
+
+                let fillColor = "#fff";
+                if (scores[name]) {
+                    if (scores[name] == 3) {
+                        fillColor = "#FF0000"; // 빨간색
+                    } else if (scores[name] == 2) {
+                        fillColor = "#FFFF00"; // 노란색
+                    } else if (scores[name] == 1) {
+                        fillColor = "#24df1a"; // 초록색
+                    }
+                }
+
+            coordinates[0].forEach((coordinate) => {
+                let point = {};
+                point.x = coordinate[1];
+                point.y = coordinate[0];
+                points.push(point);
+                path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
+            });
+
+            let polygon = new kakao.maps.Polygon({
+                map: map,
+                path: path, // 그려질 다각형의 좌표 배열입니다
+                strokeWeight: 2, // 선의 두께입니다
+                strokeColor: "#fff", // 선의 색깔입니다
+                strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: "solid", // 선의 스타일입니다
+                fillColor: fillColor, // 채우기 색깔입니다
+                fillOpacity: 0.7, // 채우기 불투명도 입니다
+            });
+
+            polygons.push(polygon);
+        };
+
+        data.forEach((val) => {
+            coordinates = val.geometry.coordinates;
+            name = val.properties.CTP_KOR_NM;
+
+            if (val.geometry.type === "Polygon") {
+                displayArea(coordinates, name);
+            } else if (val.geometry.type === "MultiPolygon") {
+                displayMultiPolygon(coordinates, name);
+            }
+        });
     }, []);
 
     return (
@@ -158,13 +188,7 @@ function Beach() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} xl={7}>
                         <Card>
-                            <Map
-                                center={{ lat: 36.564, lng: 128.043 }}
-                                style={{ width: "800px", height: "600px" }}
-                                level={13}
-                            >
-                                {markers}
-                            </Map>
+                            <div id="map" style={{ width: "100%", height: "400px" }}></div>
                         </Card>
                     </Grid>
                     <Grid item xs={12} md={6} xl={5}>
@@ -175,18 +199,17 @@ function Beach() {
             <SoftBox mt={5} mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
-                        <Card>박스 추가</Card>
+                        <Card>
+                            박스 추가
+                        </Card>
                     </Grid>
                 </Grid>
             </SoftBox>
             <SoftBox mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
-                        {/* Pass the selected profile data to the BuildByDevelopers component */}
-                        <BuildByDevelopers
-                            selectedProfile={selectedProfile}
-                            onCheckClick={handleCheckClick}
-                        />
+                    {/* Pass the selected profile data to the BuildByDevelopers component */}
+                    <BuildByDevelopers selectedProfile={selectedProfile} onCheckClick={handleCheckClick} />
                     </Grid>
                 </Grid>
             </SoftBox>
