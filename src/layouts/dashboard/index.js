@@ -56,6 +56,7 @@ function GuideSelect() {
 
 function Dashboard() {
     const [location, setLocation] = useState("");
+    const [monthLabel, setMonthLabel] = useState([]);
     const [monthValue, setMonthValue] = useState([]);
     const [causeValue, setCauseValue] = useState([]);
     const [causeLabel, setCauseLabel] = useState([]);
@@ -66,20 +67,7 @@ function Dashboard() {
     const [dataLoading, setDataLoading] = useState(true);
 
     const monthLineChartData = {
-        labels: [
-            "1월",
-            "2월",
-            "3월",
-            "4월",
-            "5월",
-            "6월",
-            "7월",
-            "8월",
-            "9월",
-            "10월",
-            "11월",
-            "12월",
-        ],
+        labels: monthLabel,
         datasets: [
             {
                 label: "빈도",
@@ -120,54 +108,31 @@ function Dashboard() {
     };
 
     const options = [
-        { value: 0, label: "부산광역시" },
-        { value: 1, label: "전라북도" },
-        { value: 2, label: "제주특별자치도" },
+        { value: "부산광역시", label: "부산광역시" },
+        { value: "전라북도", label: "전라북도" },
+        { value: "제주특별자치도", label: "제주특별자치도" },
     ];
 
     const handleChange = (event) => {
         if (event.target.value === "") {
         } else {
             setLocation(event.target.value);
-            // axios
-            //     .get("")
-            //     .then((data) => {
-            setDataLoading(false);
-            setMonthValue([17, 8, 20, 13, 30, 77, 100, 165, 37, 47, 15, 17]);
-            setCauseValue([344, 244, 56, 42, 13, 5, 3, 1]);
-            setCauseLabel([
-                "기타 수난",
-                "물놀이 익수",
-                "수상표류",
-                "무동력수상레져",
-                "선박조난",
-                "동력수상레져",
-                "차량추락 침수",
-                "어패류 채취 익 수",
-            ]);
-            setCityValue([265, 134, 92, 89, 54, 44, 11, 8, 6, 4]);
-            setCityLabel([
-                "해운대구",
-                "수영구",
-                "서구",
-                "기장군",
-                "영도구",
-                "사하구",
-                "남구",
-                "강서구",
-                "중구",
-                "동구",
-            ]);
-            setSpaceValue([708, 99, 53, 16, 14]);
-            setSpaceLabel([
-                "바다",
-                "기타 하천.바다",
-                "국가하천(강)",
-                "일반도로(기타)",
-                "지방(소)하천",
-            ]);
-            //     })
-            //     .catch((error) => {});
+            axios
+                .get(`${process.env.REACT_APP_API_URL}/accident?location=${event.target.value}`)
+                .then((res) => {
+                    setDataLoading(false);
+                    setMonthLabel(res.data.month);
+                    setMonthValue(res.data.month_counts);
+                    setCauseValue(res.data.cause_counts);
+                    setCauseLabel(res.data.causes);
+                    setCityValue(res.data.sigungu_counts);
+                    setCityLabel(res.data.sigungu);
+                    setSpaceValue(res.data.place_counts);
+                    setSpaceLabel(res.data.place);
+                })
+                .catch((error) => {
+                    setDataLoading(false);
+                });
         }
     };
 

@@ -30,8 +30,6 @@ import ProfilesList from "examples/Lists/ProfilesList";
 import Header from "layouts/beach/components/Header";
 
 // Images
-import borders from "assets/theme/base/borders";
-import geojson from "assets/SIDO_MAP_2022.json";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BuildByDevelopers from "layouts/dashboard/components/BuildByDevelopers";
@@ -39,11 +37,57 @@ import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
 import markerRed from "assets/marker_red.png";
 import markerGreen from "assets/marker_green.png";
 import markerYellow from "assets/marker_yellow.png";
-import jellyfish from "./data/jellyfish.js"
+import jellyfish from "./data/jellyfish.js";
+import DotLoader from "react-spinners/DotLoader";
+
+function recommendBeachList(response, func) {
+    const beachList = response.map((data, index) => {
+        return {
+            id: index,
+            name: data.beach_name,
+            rainfall_score: data.rainfall_score,
+            jellyfish_score: data.jellyfish_score,
+            beach_score: data.beach_score,
+            action: {
+                color: "info",
+                label: "check",
+                click: func,
+            },
+        };
+    });
+
+    return beachList;
+}
+
 function Beach() {
+    const [jellyfishScore, setJellyfishScore] = useState({});
+    useEffect(() => {
+            axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
+            .then((res) => {setJellyfishScore(res.data)})
+            .catch((error) => {});
+    }, []);
+
+    const guideSelect = {
+        beach_name: "지역을 선택해주세요.",
+        rainfall_score: 0,
+        jellyfish_score: 0,
+        beach_score: 0,
+    };
+    const [recommendBeach, setRecommendBeach] = React.useState([
+        guideSelect,
+        guideSelect,
+        guideSelect,
+    ]);
+    const [loading, setLoading] = React.useState(false);
+    const handleBeach = (e) => {
+        console.log(e.target.dataset.name);
+        // axios 동작 추가
+    };
+
+    const profilesListData = recommendBeachList(recommendBeach, handleBeach);
     // apiURL 선언
     // const apiUrl = "http://your-django-server-address/equipment/";
-    // const [apiData, setApitData] = useState([]); // 새로운 마커 정보 
+    // const [apiData, setApitData] = useState([]); // 새로운 마커 정보
 
     // useEffect(() => {
     //     // 데이터요청
@@ -60,11 +104,11 @@ function Beach() {
 
     // const MapComponent = () => {
     //     const [apiDataEquipment, setApiDataEquipment] = useState([]);
-      
+
     //     useEffect(() => {
     //       // 장고 API 엔드포인트 주소
     //       const apiUrl = 'http://marinemate-eb-drf-app-env.eba-iwkxc5nd.eu-west-2.elasticbeanstalk.com/equipment/';
-      
+
     //       // 장고 API 호출
     //       axios.get(apiUrl)
     //         .then(response => {
@@ -75,57 +119,28 @@ function Beach() {
     //           console.error('Error fetching data:', error);
     //         });
     //     }, [])};
-      
+
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
 
     // 윗쪽 지도 데이터
-    useEffect(() => {
-        axios.get('')
-        .then(res => setData(res.data))
-        .catch(error => console.log(error));
-    }, [])
+    // useEffect(() => {
+    //     axios.get('')
+    //     .then(res => setData(res.data))
+    //     .catch(error => console.log(error));
+    // }, [])
 
     // 아랫쪽 지도 데이터
-    useEffect(() => {
-        axios.get('')
-        .then(res => setData2(res.data))
-        .catch(error => console.log(error));
-    }, [])
+    // useEffect(() => {
+    //     axios.get('')
+    //     .then(res => setData2(res.data))
+    //     .catch(error => console.log(error));
+    // }, [])
 
-
-        // 마커 정보를 사용하여 지도에 마커 표시 등의 작업 수행
-        // ...
-    const locations_specific = jellyfish;   // const locations_specific = data;
-    const locations_specific2 = jellyfish;  // const locations_specific2 = data2;
-
-    const handleBeach = (e) => {
-        console.log(e.target.dataset.name);
-        // axios 동작 추가
-    };
-
-    const profilesListData = [
-        {
-            id: 1,
-            name: "해운대 해수욕장",
-            description: "Hi! I need more information..",
-            action: {
-                color: "info",
-                label: "check",
-                click: handleBeach,
-            },
-        },
-        {
-            id: 2,
-            name: "강원도 해수욕장",
-            description: "Awesome work, can you..",
-            action: {
-                color: "info",
-                label: "check",
-                click: handleBeach,
-            },
-        },
-    ];
+    // 마커 정보를 사용하여 지도에 마커 표시 등의 작업 수행
+    // ...
+    const locations_specific = jellyfish; // const locations_specific = data;
+    const locations_specific2 = jellyfish; // const locations_specific2 = data2;
 
     // // State to hold the selected profile data
     const [selectedProfile, setSelectedProfile] = useState(null);
@@ -134,19 +149,6 @@ function Beach() {
     const handleCheckClick = (profile) => {
         // Toggle the visibility of ProfileInfoCard
         setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
-    };
-
-    const scores = {
-        부산광역시: 2,
-        인천광역시: 3,
-        강원도: 2,
-        경상북도: 1,
-        충청남도: 2,
-        전라남도: 2,
-        제주특별자치도: 2,
-        경상남도: 2,
-        전라북도: 2,
-        울산광역시: 1,
     };
 
     const EventMarkerContainer = ({ position, content, markerSrc }) => {
@@ -166,12 +168,14 @@ function Beach() {
             >
                 {isVisible && (
                     <div
-                        style={{
-                            // padding: "5px",
-                            // // color: "red",
-                            // borderRadius: "10px",
-                            // backgroundColor: "#fff",
-                        }}
+                        style={
+                            {
+                                // padding: "5px",
+                                // // color: "red",
+                                // borderRadius: "10px",
+                                // backgroundColor: "#fff",
+                            }
+                        }
                     >
                         {content}
                     </div>
@@ -182,7 +186,7 @@ function Beach() {
 
     const markers = locations_specific.map((location) => {
         const { area, space } = location;
-        const score = scores[area];
+        const score = jellyfishScore[area];
 
         let markerSrc;
 
@@ -207,7 +211,7 @@ function Beach() {
 
     const markers2 = locations_specific2.map((location) => {
         const { area, space } = location;
-        const score = scores[area];
+        const score = jellyfishScore[area];
 
         let markerSrc;
 
@@ -230,20 +234,18 @@ function Beach() {
         return spaceMarkers;
     });
 
-    useEffect(() => {
-     
-    }, []);
+    useEffect(() => {}, []);
 
     return (
         <DashboardLayout>
-            <Header />
+            <Header setRecommendBeach={setRecommendBeach} setLoading={setLoading} />
             <SoftBox mt={5} mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} xl={7}>
                         <Card>
                             <Map
-                                center={{ lat: 36.564, lng: 128.043 }}
-                                style={{ width: "800px", height: "600px" }}
+                                center={{ lat: 36, lng: 128.043 }}
+                                style={{ width: "100%", height: "500px" }}
                                 level={13}
                             >
                                 {markers}
@@ -251,7 +253,11 @@ function Beach() {
                         </Card>
                     </Grid>
                     <Grid item xs={12} md={6} xl={5}>
-                        <ProfilesList title="해수욕장 추천 리스트" profiles={profilesListData} />
+                        <ProfilesList
+                            title="해수욕장 추천 리스트"
+                            profiles={profilesListData}
+                            loading={loading}
+                        />
                     </Grid>
                 </Grid>
             </SoftBox>
@@ -268,10 +274,10 @@ function Beach() {
                     <Grid item xs={12} lg={12}>
                         <Card>
                             {/*
-                            * 아래의 코드는 바로 실행되는 IIFE(즉시 실행 함수 표현식)를 사용합니다.
-                            * 이렇게 하면 API를 호출할 때 비동기로 데이터를 받아올 수 있습니다.
-                            * 받아온 데이터를 활용하는 로직은 .then()에서 처리합니다.
-                            */}
+                             * 아래의 코드는 바로 실행되는 IIFE(즉시 실행 함수 표현식)를 사용합니다.
+                             * 이렇게 하면 API를 호출할 때 비동기로 데이터를 받아올 수 있습니다.
+                             * 받아온 데이터를 활용하는 로직은 .then()에서 처리합니다.
+                             */}
                             {/* {(() => {
                                 axios.get(apiUrl)
                                     .then((response) => {
@@ -283,14 +289,14 @@ function Beach() {
                                         console.error(error);
                                     });
                             })()} */}
-                            
-                            <Map
+
+                            {/* <Map
                                 center={{ lat: 37.564, lng: 128.043 }}
                                 style={{ width: "800px", height: "600px" }}
                                 level={13}
                             >
                                 {markers2}
-                            </Map>
+                            </Map> */}
                         </Card>
                     </Grid>
                 </Grid>
