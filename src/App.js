@@ -54,90 +54,88 @@ import Beach from "./layouts/dashboard"; // Beach 컴포넌트를 불러옵니�
 // import BuildByDevelopers from "./layouts/dashboard/components/BuildByDevelopers"; // BeachDescription 컴포넌트를 불러옵니다
 
 export default function App() {
-  const [controller, dispatch] = useSoftUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
-  const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
-  const { pathname } = useLocation();
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
+    const [controller, dispatch] = useSoftUIController();
+    const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
+    const [onMouseEnter, setOnMouseEnter] = useState(false);
+    const [rtlCache, setRtlCache] = useState(null);
+    const { pathname } = useLocation();
+    // Cache for the rtl
+    useMemo(() => {
+        const cacheRtl = createCache({
+            key: "rtl",
+            stylisPlugins: [rtlPlugin],
+        });
 
-    setRtlCache(cacheRtl);
-  }, []);
+        setRtlCache(cacheRtl);
+    }, []);
 
-  // Open sidenav when mouse enter on mini sidenav
-  const handleOnMouseEnter = () => {
-    if (miniSidenav && !onMouseEnter) {
-      setMiniSidenav(dispatch, false);
-      setOnMouseEnter(true);
-    }
-  };
+    // Open sidenav when mouse enter on mini sidenav
+    const handleOnMouseEnter = () => {
+        if (miniSidenav && !onMouseEnter) {
+            setMiniSidenav(dispatch, false);
+            setOnMouseEnter(true);
+        }
+    };
 
-  // Close sidenav when mouse leave mini sidenav
-  const handleOnMouseLeave = () => {
-    if (onMouseEnter) {
-      setMiniSidenav(dispatch, true);
-      setOnMouseEnter(false);
-    }
-  };
+    // Close sidenav when mouse leave mini sidenav
+    const handleOnMouseLeave = () => {
+        if (onMouseEnter) {
+            setMiniSidenav(dispatch, true);
+            setOnMouseEnter(false);
+        }
+    };
 
-  // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+    // Change the openConfigurator state
+    const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
-  // Setting the dir attribute for the body element
-  useEffect(() => {
-    document.body.setAttribute("dir", direction);
-  }, [direction]);
+    // Setting the dir attribute for the body element
+    useEffect(() => {
+        document.body.setAttribute("dir", direction);
+    }, [direction]);
 
-  // Setting page scroll to 0 when changing the route
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, [pathname]);
+    // Setting page scroll to 0 when changing the route
+    useEffect(() => {
+        document.documentElement.scrollTop = 0;
+        document.scrollingElement.scrollTop = 0;
+    }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+    const getRoutes = (allRoutes) =>
+        allRoutes.map((route) => {
+            if (route.collapse) {
+                return getRoutes(route.collapse);
+            }
 
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
+            if (route.route) {
+                return <Route exact path={route.route} element={route.component} key={route.key} />;
+            }
 
-      return null;
-    });
+            return null;
+        });
 
-  return pathname === "/" ? (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
-        {getRoutes(routes)}
-      </Routes>
-    </ThemeProvider>
-  ) : (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            // brand={brand}
-            brandName="MarineMate"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-        </>
-      )}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </ThemeProvider>
-  );
+    return pathname === "/" ? (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Routes>{getRoutes(routes)}</Routes>
+        </ThemeProvider>
+    ) : (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {layout === "dashboard" && (
+                <>
+                    <Sidenav
+                        color={sidenavColor}
+                        // brand={brand}
+                        brandName="MarineMate"
+                        routes={routes}
+                        onMouseEnter={handleOnMouseEnter}
+                        onMouseLeave={handleOnMouseLeave}
+                    />
+                </>
+            )}
+            <Routes>
+                {getRoutes(routes)}
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </ThemeProvider>
+    );
 }
