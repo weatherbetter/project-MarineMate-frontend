@@ -40,6 +40,7 @@ import markerYellow from "assets/marker_yellow.png";
 import markerBlue from "assets/marker_blue.png";
 import jellyfish from "./data/jellyfish.js";
 import DotLoader from "react-spinners/DotLoader";
+import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 
 function recommendBeachList(response, func) {
     const beachList = response.map((data, index) => {
@@ -62,11 +63,11 @@ function recommendBeachList(response, func) {
 
 function Beach() {
     const [jellyfishScore, setJellyfishScore] = useState({});
-    useEffect(() => {
-            axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
-            .then((res) => {setJellyfishScore(res.data)})
-            .catch((error) => {});
-    }, []);
+    // useEffect(() => {
+    //         axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
+    //         .then((res) => {setJellyfishScore(res.data)})
+    //         .catch((error) => {});
+    // }, []);
 
     const guideSelect = {
         beach_name: "지역을 선택해주세요.",
@@ -150,13 +151,13 @@ function Beach() {
 
     // 아랫쪽 지도 데이터
     useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API_URL}/equipment`)
-            .then((res) => {
-                // console.log(res.data);
-                setData2(res.data);
-            })
-            .catch((error) => console.log(error));
+        // axios
+        //     .get(`${process.env.REACT_APP_API_URL}/equipment`)
+        //     .then((res) => {
+        //         // console.log(res.data);
+        //         setData2(res.data);
+        //     })
+        //     .catch((error) => console.log(error));
     }, []);
 
     // useEffect(() => {
@@ -289,6 +290,43 @@ function Beach() {
                             title="해수욕장 추천 리스트"
                             profiles={profilesListData}
                             loading={loading}
+                        />
+                    </Grid>
+                </Grid>
+            </SoftBox>
+            <SoftBox mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={4} xl={4}>
+                        <MiniStatisticsCard
+                            title={{ text: "소방서 수" }}
+                            count="$53,000"
+                            percentage={{ color: "success" }}
+                            icon={{ color: "info", component: "fire_truck" }}
+                            // bgColor="error"
+                            iconColor="error"
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4} xl={4}>
+                        <MiniStatisticsCard
+                            title={{ text: "안전센터 수" }}
+                            count="2,300"
+                            percentage={{ color: "success" }}
+                            icon={{ color: "info", component: "local_hospital" }}
+                            // bgColor="info"
+                            iconColor="info"
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4} xl={4}>
+                        <MiniStatisticsCard
+                            title={{ text: "펌뷸런스 수" }}
+                            count="$103,430"
+                            percentage={{ color: "success" }}
+                            icon={{
+                                color: "info",
+                                component: "airport_shuttle",
+                            }}
+                            iconColor="success"
+                            // bgColor="success"
                         />
                     </Grid>
                 </Grid>
