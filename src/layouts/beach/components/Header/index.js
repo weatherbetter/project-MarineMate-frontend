@@ -85,6 +85,12 @@ function Header(props) {
                 props.setLoading(false);
             })
             .catch((error) => {});
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/safety?location=${event.target.value}`)
+            .then((res) => {
+                props.setSafetyCount(res.data);
+            })
+            .catch((error) => {});
     };
 
     return (
