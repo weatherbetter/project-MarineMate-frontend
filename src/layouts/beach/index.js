@@ -40,6 +40,7 @@ import markerYellow from "assets/marker_yellow.png";
 import markerBlue from "assets/marker_blue.png";
 import jellyfish from "./data/jellyfish.js";
 import DotLoader from "react-spinners/DotLoader";
+import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
 
 function recommendBeachList(response, func) {
     const beachList = response.map((data, index) => {
@@ -62,6 +63,11 @@ function recommendBeachList(response, func) {
 
 function Beach() {
     const [jellyfishScore, setJellyfishScore] = useState({});
+    const [safetyCount, setSafetyCount] = useState({
+        "Fire Station": 0,
+        "Safety Center": 0,
+        "Pumbulance": 0,
+    });
     useEffect(() => {
             axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
             .then((res) => {setJellyfishScore(res.data)})
@@ -269,7 +275,11 @@ function Beach() {
 
     return (
         <DashboardLayout>
-            <Header setRecommendBeach={setRecommendBeach} setLoading={setLoading} />
+            <Header
+                setRecommendBeach={setRecommendBeach}
+                setLoading={setLoading}
+                setSafetyCount={setSafetyCount}
+            />
             <SoftBox mt={5} mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} xl={7}>
@@ -289,6 +299,40 @@ function Beach() {
                             title="해수욕장 추천 리스트"
                             profiles={profilesListData}
                             loading={loading}
+                        />
+                    </Grid>
+                </Grid>
+            </SoftBox>
+            <SoftBox mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={4} xl={4}>
+                        <MiniStatisticsCard
+                            title={{ text: "소방서 수" }}
+                            count={safetyCount["Fire Station"]}
+                            percentage={{ color: "success" }}
+                            icon={{ color: "info", component: "fire_truck" }}
+                            iconColor="error"
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4} xl={4}>
+                        <MiniStatisticsCard
+                            title={{ text: "안전센터 수" }}
+                            count={safetyCount["Safety Center"]}
+                            percentage={{ color: "success" }}
+                            icon={{ color: "info", component: "local_hospital" }}
+                            iconColor="info"
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4} xl={4}>
+                        <MiniStatisticsCard
+                            title={{ text: "펌뷸런스 수" }}
+                            count={safetyCount["Pumbulance"]}
+                            percentage={{ color: "success" }}
+                            icon={{
+                                color: "info",
+                                component: "airport_shuttle",
+                            }}
+                            iconColor="success"
                         />
                     </Grid>
                 </Grid>
