@@ -45,15 +45,15 @@ import CardMedia from "@mui/material/CardMedia";
     
     useEffect(() => {
       // 각각의 API를 호출하여 데이터를 가져옵니다.
-      axios.get(`${process.env.REACT_APP_API_URL}/beach-weather/<int:beach_id>`)
+      axios.get(`${process.env.REACT_APP_API_URL}/beach-weather/1`)
           .then((res) => setBeachWeatherData(res.data))
           .catch((error) => console.log(error));
 
-      axios.get(`${process.env.REACT_APP_API_URL}/beach-infra/<int:beach_id>`)
+      axios.get(`${process.env.REACT_APP_API_URL}/beach-infra/1`)
           .then((res) => setBeachInfraData(res.data))
           .catch((error) => console.log(error));
 
-      axios.get(`${process.env.REACT_APP_API_URL}/beach-scores/<int:beach_id>`)
+      axios.get(`${process.env.REACT_APP_API_URL}/beach-scores/1`)
           .then((res) => setBeachScoresData(res.data))
           .catch((error) => console.log(error));
   }, []);
