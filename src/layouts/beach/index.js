@@ -37,6 +37,7 @@ import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
 import markerRed from "assets/marker_red.png";
 import markerGreen from "assets/marker_green.png";
 import markerYellow from "assets/marker_yellow.png";
+import markerBlue from "assets/marker_blue.png";
 import jellyfish from "./data/jellyfish.js";
 import DotLoader from "react-spinners/DotLoader";
 
@@ -80,7 +81,7 @@ function Beach() {
     ]);
     const [loading, setLoading] = React.useState(false);
     const handleBeach = (e) => {
-        console.log(e.target.dataset.name);
+        // console.log(e.target.dataset.name);
         // axios 동작 추가
     };
 
@@ -120,27 +121,51 @@ function Beach() {
     //         });
     //     }, [])};
 
+    // const [data, setData] = useState([]);
+    // const [locations_specific, setLocationSpecific] = useState([]);
+    // const [locations_specific2, setLocationSpecific2] = useState([]);
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
 
     // 윗쪽 지도 데이터
     // useEffect(() => {
-    //     axios.get('')
-    //     .then(res => setData(res.data))
-    //     .catch(error => console.log(error));
-    // }, [])
+    //     axios.get('h')
+    //         .then(res => {
+    //             console.log(res.data);
+    //             setLocationSpecific(res.data);
+    //         })
+    //         .catch(error => console.log(error));
+    // }, []);
+
+    // 구급인프라
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/safety?location=부산광역시`)
+            .then((res) => {
+                // console.log(res.data);
+                setData(res.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     // 아랫쪽 지도 데이터
-    // useEffect(() => {
-    //     axios.get('')
-    //     .then(res => setData2(res.data))
-    //     .catch(error => console.log(error));
-    // }, [])
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/equipment`)
+            .then((res) => {
+                // console.log(res.data);
+                setData2(res.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
+    // useEffect(() => {
+    //     setLocationSpecific(data);
+    // }, [data])
     // 마커 정보를 사용하여 지도에 마커 표시 등의 작업 수행
     // ...
-    const locations_specific = jellyfish; // const locations_specific = data;
-    const locations_specific2 = jellyfish; // const locations_specific2 = data2;
+    const locations_specific = jellyfish; // const locations_specific = data;//
+    const locations_specific2 = data2;
 
     // // State to hold the selected profile data
     const [selectedProfile, setSelectedProfile] = useState(null);
@@ -185,6 +210,9 @@ function Beach() {
     };
 
     const markers = locations_specific.map((location) => {
+        if (!location || !location.space) {
+            return [];
+        }
         const { area, space } = location;
         const score = jellyfishScore[area];
 
@@ -209,30 +237,33 @@ function Beach() {
         return spaceMarkers;
     });
 
-    const markers2 = locations_specific2.map((location) => {
-        const { area, space } = location;
-        const score = jellyfishScore[area];
+    const markers2 = locations_specific2.map((location1, index) => (
+        <MapMarker
+            key={index}
+            position={{ lat: location1.equipment_long, lng: location1.equipment_lat }}
+            // image={{
+            //     src: markerBlue,
+            //     size: {
+            //         width: 24,
+            //         height: 35,
+            //     },
+            // }}
+            title={location1.spot}
+        />
+    ));
 
-        let markerSrc;
-
-        if (score === 3) {
-            markerSrc = markerRed;
-        } else if (score === 2) {
-            markerSrc = markerYellow;
-        } else {
-            markerSrc = markerGreen;
-        }
-
-        const spaceMarkers = space.map((loc) => (
-            <EventMarkerContainer
-                key={`EventMarkerContainer-${loc.latlng.lat}-${loc.latlng.lng}`}
-                position={loc.latlng}
-                content={loc.title}
-                markerSrc={markerSrc}
-            />
-        ));
-        return spaceMarkers;
-    });
+    // const spaceMarkers = space.map((loc) => {
+    //     console.log(loc);
+    //     return (
+    //         <EventMarkerContainer
+    //             key={`EventMarkerContainer-${loc.latlng.lat}-${loc.latlng.lng}`}
+    //             position={loc.latlng}
+    //             content={loc.title}
+    //             markerSrc={markerSrc}
+    //         />
+    //     );
+    // });
+    // return spaceMarkers;
 
     useEffect(() => {}, []);
 
@@ -249,6 +280,7 @@ function Beach() {
                                 level={13}
                             >
                                 {markers}
+                                {/* {markers.length > 0 && markers} */}
                             </Map>
                         </Card>
                     </Grid>
@@ -273,30 +305,16 @@ function Beach() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
                         <Card>
-                            {/*
-                             * 아래의 코드는 바로 실행되는 IIFE(즉시 실행 함수 표현식)를 사용합니다.
-                             * 이렇게 하면 API를 호출할 때 비동기로 데이터를 받아올 수 있습니다.
-                             * 받아온 데이터를 활용하는 로직은 .then()에서 처리합니다.
-                             */}
-                            {/* {(() => {
-                                axios.get(apiUrl)
-                                    .then((response) => {
-                                        // 받아온 데이터 처리 로직 작성
-                                        const data = response.data;
-                                        // ...
-                                    })
-                                    .catch((error) => {
-                                        console.error(error);
-                                    });
-                            })()} */}
-
-                            {/* <Map
-                                center={{ lat: 37.564, lng: 128.043 }}
-                                style={{ width: "800px", height: "600px" }}
+                            <Map
+                                center={{ lat: 36, lng: 128.043 }}
+                                style={{ width: "100%", height: "600px" }}
                                 level={13}
                             >
                                 {markers2}
-                            </Map> */}
+                                {/* 조건부 렌더링을 이용하여 마커 표시 */}
+                                {/* {markers2.length > 0 && markers2 } */}
+                                {/* {markers2.length > 0 ? markers2 : <></>} */}
+                            </Map>
                         </Card>
                     </Grid>
                 </Grid>
