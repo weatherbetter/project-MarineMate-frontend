@@ -62,9 +62,6 @@ function ReportsBarChartItem({ color, icon, label, progress }) {
         <SoftTypography variant="h4" fontWeight="bold" color={color}>
           {progress.content}
         </SoftTypography>
-        <SoftBox width="75%" mt={0.5}>
-          <SoftProgress value={progress.percentage} color={color} />
-        </SoftBox>
       </SoftBox>
     </SoftBox>
   );
@@ -84,10 +81,6 @@ ReportsBarChartItem.propTypes = {
     component: PropTypes.node.isRequired,
   }).isRequired,
   label: PropTypes.string.isRequired,
-  progress: PropTypes.shape({
-    content: PropTypes.string.isRequired,
-    percentage: PropTypes.number.isRequired,
-  }).isRequired,
 };
 
 export default ReportsBarChartItem;

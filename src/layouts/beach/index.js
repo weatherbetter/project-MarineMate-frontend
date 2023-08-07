@@ -28,6 +28,7 @@ import ProfilesList from "examples/Lists/ProfilesList";
 
 // Overview page components
 import Header from "layouts/beach/components/Header";
+import LineChart from "layouts/beach/components/LineChart";
 
 // Images
 import React, { useEffect, useState } from "react";
@@ -41,6 +42,7 @@ import markerBlue from "assets/marker_blue.png";
 import jellyfish from "./data/jellyfish.js";
 import DotLoader from "react-spinners/DotLoader";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
+import { Line } from "react-chartjs-2";
 
 function recommendBeachList(response, func) {
     const beachList = response.map((data, index) => {
@@ -67,13 +69,13 @@ function Beach() {
     const [safetyCount, setSafetyCount] = useState({
         "Fire Station": 0,
         "Safety Center": 0,
-        "Pumbulance": 0,
+        Pumbulance: 0,
     });
-    useEffect(() => {
-            axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
-            .then((res) => {setJellyfishScore(res.data)})
-            .catch((error) => {});
-    }, []);
+    // useEffect(() => {
+    //         axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
+    //         .then((res) => {setJellyfishScore(res.data)})
+    //         .catch((error) => {});
+    // }, []);
 
     const guideSelect = {
         beach_name: "지역을 선택해주세요.",
@@ -98,21 +100,19 @@ function Beach() {
 
     const profilesListData = recommendBeachList(recommendBeach, handleBeach);
 
- 
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
-
+    const [beachDetail, setBeachDetail] = useState(null);
 
     // 인명구조장비함
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API_URL}/equipment`)
-            .then((res) => {
-                // console.log(res.data);
-                setData2(res.data);
-            })
-            .catch((error) => console.log(error));
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get(`${process.env.REACT_APP_API_URL}/equipment`)
+    //         .then((res) => {
+    //             setData2(res.data);
+    //         })
+    //         .catch((error) => console.log(error));
+    // }, []);
 
     // useEffect(() => {
     //     setLocationSpecific(data);
@@ -287,14 +287,74 @@ function Beach() {
                     </Grid>
                 </Grid>
             </SoftBox>
+            <SoftBox mb={3}>
+                <Grid container spacing={3}>
+                    {beachDetail ? (
+                        <>
+                            <Grid item xs={12} sm={4} xl={4}>
+                                <LineChart
+                                    data={beachDetail.wind_speed}
+                                    yAxisKey={"wind_speed"}
+                                    label={"풍속"}
+                                    color={"#00BFFF"}
+                                ></LineChart>
+                            </Grid>
+                            <Grid item xs={12} sm={4} xl={4}>
+                                <LineChart
+                                    data={beachDetail.max_temperature}
+                                    yAxisKey={"day_max_temp"}
+                                    label={"낮 최고기온"}
+                                    color={"#FA5858"}
+                                ></LineChart>
+                            </Grid>
+                            <Grid item xs={12} sm={4} xl={4}>
+                                <LineChart
+                                    data={beachDetail.wave_height}
+                                    yAxisKey={"wave_height"}
+                                    label={"파고"}
+                                    color={"#7401DF"}
+                                ></LineChart>
+                            </Grid>
+                        </>
+                    ) : (
+                        <>
+                            <Grid item xs={12} sm={4} xl={4}>
+                                <LineChart
+                                    data={[]}
+                                    yAxisKey={"wind_speed"}
+                                    label={"풍속"}
+                                    color={"#00BFFF"}
+                                ></LineChart>
+                            </Grid>
 
+                            <Grid item xs={12} sm={4} xl={4}>
+                                <LineChart
+                                    data={[]}
+                                    yAxisKey={"day_max_temp"}
+                                    label={"낮 최고기온"}
+                                    color={"#FA5858"}
+                                ></LineChart>
+                            </Grid>
+                            <Grid item xs={12} sm={4} xl={4}>
+                                <LineChart
+                                    data={[]}
+                                    yAxisKey={"wave_height"}
+                                    label={"파고"}
+                                    color={"#7401DF"}
+                                ></LineChart>
+                            </Grid>
+                        </>
+                    )}
+                </Grid>
+            </SoftBox>
             <SoftBox mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
-                        {/* Pass the selected profile data to the BuildByDevelopers component */}
-                        <BuildByDevelopers beach_id = {beach_id}
-                        selectedProfile={selectedProfile} 
-                        // onCheckClick={handleCheckClick} 
+                        <BuildByDevelopers
+                            beach_id={beach_id}
+                            selectedProfile={selectedProfile}
+                            setBeachDetail={setBeachDetail}
+                            // onCheckClick={handleCheckClick}
                         />
                     </Grid>
                 </Grid>

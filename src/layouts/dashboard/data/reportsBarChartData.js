@@ -14,32 +14,33 @@ Coded by www.creative-tim.com
 */
 
 const reportsBarChartData = {
-  chart: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Sales", data: [450, 200, 100, 220, 500, 100, 400, 230, 500] },
-  },
-  items: [
-    {
-      icon: { color: "primary", component: "library_books" },
-      label: "users",
-      progress: { content: "36K", percentage: 60 },
-    },
-    {
-      icon: { color: "info", component: "touch_app" },
-      label: "clicks",
-      progress: { content: "2M", percentage: 90 },
-    },
-    {
-      icon: { color: "warning", component: "payment" },
-      label: "sales",
-      progress: { content: "$435", percentage: 30 },
-    },
-    {
-      icon: { color: "error", component: "extension" },
-      label: "items",
-      progress: { content: "43", percentage: 50 },
-    },
-  ],
+    items: [
+        {
+            icon: { color: "primary", component: "library_books" },
+            label: "샤워실",
+            progress: { content: "3", percentage: 3 * 10 },
+        },
+        {
+            icon: { color: "info", component: "touch_app" },
+            label: "화장실",
+            progress: { content: "0", percentage: 0 * 10 },
+        },
+        {
+            icon: { color: "warning", component: "payment" },
+            label: "탈의실",
+            progress: { content: "0", percentage: 0 * 10 },
+        },
+        {
+            icon: { color: "error", component: "extension" },
+            label: "분수대",
+            progress: { content: "1", percentage: 1 * 10 },
+        },
+        {
+            icon: { color: "error", component: "extension" },
+            label: "수돗가",
+            progress: { content: "0"},
+        },
+    ],
 };
 
 export default reportsBarChartData;
