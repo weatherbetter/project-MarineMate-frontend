@@ -93,39 +93,17 @@ function Beach() {
 
     const handleBeach = (e) => {
         setBeachId(e.target.dataset.id);
-        // axios 동작 추가
+        // axios 동작 추가를 Child Component에서
     };
 
     const profilesListData = recommendBeachList(recommendBeach, handleBeach);
 
-    // const [data, setData] = useState([]);
-    // const [locations_specific, setLocationSpecific] = useState([]);
-    // const [locations_specific2, setLocationSpecific2] = useState([]);
+ 
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
 
-    // 윗쪽 지도 데이터
-    // useEffect(() => {
-    //     axios.get('h')
-    //         .then(res => {
-    //             console.log(res.data);
-    //             setLocationSpecific(res.data);
-    //         })
-    //         .catch(error => console.log(error));
-    // }, []);
 
-    // 구급인프라
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_API_URL}/safety?location=부산광역시`)
-            .then((res) => {
-                // console.log(res.data);
-                setData(res.data);
-            })
-            .catch((error) => console.log(error));
-    }, []);
-
-    // 아랫쪽 지도 데이터
+    // 인명구조장비함
     useEffect(() => {
         axios
             .get(`${process.env.REACT_APP_API_URL}/equipment`)
@@ -306,13 +284,6 @@ function Beach() {
                             }}
                             iconColor="success"
                         />
-                    </Grid>
-                </Grid>
-            </SoftBox>
-            <SoftBox mt={5} mb={3}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} lg={12}>
-                        <Card>박스 추가</Card>
                     </Grid>
                 </Grid>
             </SoftBox>

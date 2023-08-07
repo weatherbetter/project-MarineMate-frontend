@@ -89,49 +89,51 @@ import CardMedia from "@mui/material/CardMedia";
                   { beachScoresData ? beachScoresData.jellyfish_score.id : null}
                   { beachScoresData ? beachScoresData.rainfall_score.beach_id : null} */}
                     {/* {beach_id && selectedProfile ?( */}
-              <Card>
-                <SoftTypography variant="h6">기상예보 {beach_id}</SoftTypography>
-                {beachWeatherData ? (
-                  <>
-                    <SoftTypography variant="body2">
-                      풍속: {beachWeatherData.wind_speed[beachWeatherData.wind_speed.length - 1].wind_speed}
-                    </SoftTypography>
-                    <SoftTypography variant="body2">
-                      온도: {beachWeatherData.max_temperature[beachWeatherData.max_temperature.length - 1].max_temperature}
-                    </SoftTypography>
-                    <SoftTypography variant="body2">
-                      파고: {beachWeatherData.wave_height[beachWeatherData.wave_height.length - 1].wave_height}
-                    </SoftTypography>
-                    <SoftTypography variant="body2">
-                      풍향: {beachWeatherData.wind_direction[beachWeatherData.wind_direction.length - 1].wind_direction}
-                    </SoftTypography>
-                  </>
-                )}
-                <SoftTypography variant="h6">주변시설 정보 {beach_id}</SoftTypography>
-                  <>
-                    <SoftTypography variant="body2">샤워장: {beachInfraData.shower_room}</SoftTypography>
-                    <SoftTypography variant="body2">화장실: {beachInfraData.toilet}</SoftTypography>
-                    <SoftTypography variant="body2">탈의실: {beachInfraData.dressing_room}</SoftTypography>
-                    <SoftTypography variant="body2">망루대: {beachInfraData.watch_tower}</SoftTypography>
-                    <SoftTypography variant="body2">공동수도: {beachInfraData.tap_water}</SoftTypography>
-                  </>
-                )}
-                <SoftTypography variant="h6">해수욕장 점수 {beach_id}</SoftTypography>
-                {beachScoresData ? (
-                  <>
-                    <SoftTypography variant="body2">수질점수: {beachScoresData.water_score}</SoftTypography>
-                    <SoftTypography variant="body2">토양점수: {beachScoresData.soil_score}</SoftTypography>
-                    <SoftTypography variant="body2">시설점수: {beachScoresData.facility_score}</SoftTypography>
-                  </>
-                )}
-          </Card>
-
-
+                    <Card>
+                      <SoftTypography variant="h6">기상예보 </SoftTypography>
+                      {beachWeatherData && (
+                        <>
+                          <SoftTypography variant="body2">
+                            풍속: {beachWeatherData.wind_speed[beachWeatherData.wind_speed.length - 1].wind_speed} m/s
+                          </SoftTypography>
+                          <SoftTypography variant="body2">
+                            온도: {beachWeatherData.max_temperature[beachWeatherData.max_temperature.length - 1].max_temperature} celcius
+                          </SoftTypography>
+                          <SoftTypography variant="body2">
+                            파고: {beachWeatherData.wave_height[beachWeatherData.wave_height.length - 1].wave_height} m
+                          </SoftTypography>
+                          <SoftTypography variant="body2">
+                            풍향: {beachWeatherData.wind_direction[beachWeatherData.wind_direction.length - 1].wind_direction} deg 
+                          </SoftTypography>
+                        </>
+                      )}
+                      <SoftTypography variant="h6">주변시설 정보 </SoftTypography>
+                      {beachInfraData && (
+                        <>
+                          <SoftTypography variant="body2">샤워장: {beachInfraData.beach_infra.shower_room}</SoftTypography>
+                          <SoftTypography variant="body2">화장실: {beachInfraData.beach_infra.toilet}</SoftTypography>
+                          <SoftTypography variant="body2">탈의실: {beachInfraData.beach_infra.dressing_room}</SoftTypography>
+                          <SoftTypography variant="body2">망루대: {beachInfraData.beach_infra.watch_tower}</SoftTypography>
+                          <SoftTypography variant="body2">공동수도: {beachInfraData.beach_infra.tap_water}</SoftTypography>
+                        </>
+                      )}
+                      <SoftTypography variant="h6">해수욕장 점수 </SoftTypography>
+                      {beachScoresData && (
+                        <>
+                          <SoftTypography variant="body2">수질점수: {beachScoresData.beach_score.water_score}</SoftTypography>
+                          <SoftTypography variant="body2">토양점수: {beachScoresData.beach_score.soil_score}</SoftTypography>
+                          <SoftTypography variant="body2">시설점수: {beachScoresData.beach_score.facility_score}</SoftTypography>
+                        </>
+                      )}
+                  </Card>
             </Grid>
             <Grid item xs={12} lg={6} sx={{ position: "relative", ml: "auto" }}>
               <SoftBox position="relative" width="100%" borderRadius="xl">
                 <CardMedia
-                  src="https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+                  src="https://images.unsplash.com/photo-1447878035468-f6464b327023?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTYzfHxiZWFjaHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                  // src="https://images.unsplash.com/photo-1520942702018-0862200e6873?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlYWNofGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                  // src="https://images.unsplash.com/photo-1504321946642-8f661bf96ff0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTM1fHxiZWFjaHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                  // src="https://plus.unsplash.com/premium_photo-1681223447322-46794b8cdfd5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTE0fHxiZWFjaHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60"
                   component="img"
                   sx={{
                     maxWidth: "100%",
