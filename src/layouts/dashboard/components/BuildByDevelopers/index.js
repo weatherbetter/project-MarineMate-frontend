@@ -38,25 +38,24 @@ import CardMedia from "@mui/material/CardMedia";
 //     setShowProfileInfo(!showProfileInfo);
 //   };
   function BuildByDevelopers({ selectedProfile, beach_id, onCheckClick }) {
-    
     const [beachWeatherData, setBeachWeatherData] = useState(null);
     const [beachInfraData, setBeachInfraData] = useState(null);
     const [beachScoresData, setBeachScoresData] = useState(null);
-    const [showProfileInfo, setShowProfileInfo] = useState(false);
+    // const [beach_id, setShowbeach_id] = useState(null);
     
     useEffect(() => {
       // 각각의 API를 호출하여 데이터를 가져옵니다.
       if (beach_id) {
       axios.get(`${process.env.REACT_APP_API_URL}/beach-weather/${beach_id}`)
-          .then((res) => setBeachWeatherData(res.data))
+          .then((res) => {setBeachWeatherData(res.data); console.log(res.data) })
           .catch((error) => console.log(error));
 
       axios.get(`${process.env.REACT_APP_API_URL}/beach-infra/${beach_id}`)
-          .then((res) => setBeachInfraData(res.data))
+          .then((res) => {setBeachInfraData(res.data); console.log(res.data)})
           .catch((error) => console.log(error));
 
       axios.get(`${process.env.REACT_APP_API_URL}/beach-scores/${beach_id}`)
-          .then((res) => setBeachScoresData(res.data))
+          .then((res) => {setBeachScoresData(res.data); console.log(res.data)}) 
           .catch((error) => console.log(error));
     }
   }, [beach_id]);
@@ -80,53 +79,54 @@ import CardMedia from "@mui/material/CardMedia";
 
 
     return (
-      <Card>
-        <SoftBox p={2}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={6}>
-              {beach_id && selectedProfile ? (
-                <Card>
-                  <SoftTypography variant="h6">기상예보 {beach_id} </SoftTypography>
-                  <SoftTypography variant="body2">
-                    풍속: {beachWeatherData.wind_speed}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    온도: {beachWeatherData.max_temperature}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    파고: {beachWeatherData.wave_height}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    풍향: {beachWeatherData.wind_direction}
-                  </SoftTypography>
-                  <SoftTypography variant="h6">주변시설 정보 {beach_id} </SoftTypography>
-                  <SoftTypography variant="body2">
-                    샤워장: {beachInfraData.shower_room}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    화장실: {beachInfraData.toilet}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    탈의실: {beachInfraData.dressing_room}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    망루대: {beachInfraData.watch_tower}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    공동수도: {beachInfraData.tap_water}
-                  </SoftTypography>
-                  <SoftTypography variant="h6">해수욕장 점수 {beach_id} </SoftTypography>
-                  <SoftTypography variant="body2">
-                    수질점수: {beachInfraData.water_score}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    토양점수: {beachInfraData.soil_score}
-                  </SoftTypography>
-                  <SoftTypography variant="body2">
-                    시설점수: {beachInfraData.facility_score}
-                  </SoftTypography>
-                </Card>
-              ) : null}
+            <Card>
+              <SoftBox p={2}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} lg={6}>
+                  {/* { beachWeatherData ? beachWeatherData.wind_speed[0].wind_speed : null}
+                  { beachInfraData ? beachInfraData.beach_infra.beach_id : null}
+                  { beachScoresData ? beachScoresData.beach_score.beach_id : null}
+                  { beachScoresData ? beachScoresData.jellyfish_score.id : null}
+                  { beachScoresData ? beachScoresData.rainfall_score.beach_id : null} */}
+                    {/* {beach_id && selectedProfile ?( */}
+              <Card>
+                <SoftTypography variant="h6">기상예보 {beach_id}</SoftTypography>
+                {beachWeatherData ? (
+                  <>
+                    <SoftTypography variant="body2">
+                      풍속: {beachWeatherData.wind_speed[beachWeatherData.wind_speed.length - 1].wind_speed}
+                    </SoftTypography>
+                    <SoftTypography variant="body2">
+                      온도: {beachWeatherData.max_temperature[beachWeatherData.max_temperature.length - 1].max_temperature}
+                    </SoftTypography>
+                    <SoftTypography variant="body2">
+                      파고: {beachWeatherData.wave_height[beachWeatherData.wave_height.length - 1].wave_height}
+                    </SoftTypography>
+                    <SoftTypography variant="body2">
+                      풍향: {beachWeatherData.wind_direction[beachWeatherData.wind_direction.length - 1].wind_direction}
+                    </SoftTypography>
+                  </>
+                )}
+                <SoftTypography variant="h6">주변시설 정보 {beach_id}</SoftTypography>
+                  <>
+                    <SoftTypography variant="body2">샤워장: {beachInfraData.shower_room}</SoftTypography>
+                    <SoftTypography variant="body2">화장실: {beachInfraData.toilet}</SoftTypography>
+                    <SoftTypography variant="body2">탈의실: {beachInfraData.dressing_room}</SoftTypography>
+                    <SoftTypography variant="body2">망루대: {beachInfraData.watch_tower}</SoftTypography>
+                    <SoftTypography variant="body2">공동수도: {beachInfraData.tap_water}</SoftTypography>
+                  </>
+                )}
+                <SoftTypography variant="h6">해수욕장 점수 {beach_id}</SoftTypography>
+                {beachScoresData ? (
+                  <>
+                    <SoftTypography variant="body2">수질점수: {beachScoresData.water_score}</SoftTypography>
+                    <SoftTypography variant="body2">토양점수: {beachScoresData.soil_score}</SoftTypography>
+                    <SoftTypography variant="body2">시설점수: {beachScoresData.facility_score}</SoftTypography>
+                  </>
+                )}
+          </Card>
+
+
             </Grid>
             <Grid item xs={12} lg={6} sx={{ position: "relative", ml: "auto" }}>
               <SoftBox position="relative" width="100%" borderRadius="xl">
