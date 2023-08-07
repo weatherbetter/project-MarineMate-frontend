@@ -45,7 +45,8 @@ import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCar
 function recommendBeachList(response, func) {
     const beachList = response.map((data, index) => {
         return {
-            id: index,
+            // id: index,
+            id: data.beach_id,
             name: data.beach_name,
             rainfall_score: data.rainfall_score,
             jellyfish_score: data.jellyfish_score,
@@ -91,9 +92,7 @@ function Beach() {
     const [beach_id, setBeachId] = useState(null);
 
     const handleBeach = (e) => {
-        const clickedBeachId = e.target.dataset.id;
-        setBeachId(clickedBeachId);
-        // console.log(e.target.dataset.name);
+        setBeachId(e.target.dataset.id);
         // axios 동작 추가
     };
 
@@ -149,11 +148,11 @@ function Beach() {
     const [selectedProfile, setSelectedProfile] = useState(null);
 
     // // 클릭 이벤트 처리 함수
-    const handleCheckClick = (profile) => {
-        console.log(profile)
-        // Toggle the visibility of ProfileInfoCard
-        setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
-    };
+    // const handleCheckClick = (profile) => {
+    //     console.log(profile)
+    //     // Toggle the visibility of ProfileInfoCard
+    //     setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
+    // };
 
     const EventMarkerContainer = ({ position, content, markerSrc }) => {
         const map = useMap();
@@ -322,9 +321,10 @@ function Beach() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
                         {/* Pass the selected profile data to the BuildByDevelopers component */}
-
                         <BuildByDevelopers beach_id = {beach_id}
-                        selectedProfile={selectedProfile} onCheckClick={handleCheckClick} />
+                        selectedProfile={selectedProfile} 
+                        // onCheckClick={handleCheckClick} 
+                        />
                     </Grid>
                 </Grid>
             </SoftBox>

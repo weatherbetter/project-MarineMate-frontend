@@ -35,7 +35,7 @@ import rain from "assets/images/rain.png";
 function ProfilesList({ title, profiles, loading }) {
     const { borderWidth, borderColor } = borders;
     const renderProfiles = profiles.map(
-        ({ name, rainfall_score, jellyfish_score, beach_score, action }, index) => (
+        ({ id, name, rainfall_score, jellyfish_score, beach_score, action }, index) => (
             <div key={index}>
                 <SoftBox component="li" display="flex" alignItems="center" py={1} mb={1}>
                     <SoftBox mr={2}>
@@ -56,7 +56,8 @@ function ProfilesList({ title, profiles, loading }) {
                             variant="text"
                             color="info"
                             onClick={action.click}
-                            data-name={name}
+                            // data-name={name}
+                            data-id={id}
                         >
                             {action.label}
                         </SoftButton>
