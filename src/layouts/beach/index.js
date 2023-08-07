@@ -92,40 +92,6 @@ function Beach() {
     };
 
     const profilesListData = recommendBeachList(recommendBeach, handleBeach);
-    // apiURL 선언
-    // const apiUrl = "http://your-django-server-address/equipment/";
-    // const [apiData, setApitData] = useState([]); // 새로운 마커 정보
-
-    // useEffect(() => {
-    //     // 데이터요청
-    //     axios.get(apiUrl)
-    //         .then((response)) => {
-    //             //받아온 데이터 처리 로직 작성
-    //             const data = response.data;
-    //             setApitData(data); // 받아온 데이터를 상태에 저장
-    //         })
-    //         .catch(error) => {
-    //             console.error(error);
-    //         });
-    // }, []);
-
-    // const MapComponent = () => {
-    //     const [apiDataEquipment, setApiDataEquipment] = useState([]);
-
-    //     useEffect(() => {
-    //       // 장고 API 엔드포인트 주소
-    //       const apiUrl = 'http://marinemate-eb-drf-app-env.eba-iwkxc5nd.eu-west-2.elasticbeanstalk.com/equipment/';
-
-    //       // 장고 API 호출
-    //       axios.get(apiUrl)
-    //         .then(response => {
-    //           // API 응답 데이터를 가져와서 markers 상태에 설정
-    //           setMarker(response.data);
-    //         })
-    //         .catch(error => {
-    //           console.error('Error fetching data:', error);
-    //         });
-    //     }, [])};
 
     // const [data, setData] = useState([]);
     // const [locations_specific, setLocationSpecific] = useState([]);
@@ -345,6 +311,16 @@ function Beach() {
                 </Grid>
             </SoftBox>
 
+            <SoftBox mb={3}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} lg={12}>
+                        {/* Pass the selected profile data to the BuildByDevelopers component */}
+                        <BuildByDevelopers beach_id={beach_id} 
+                        selectedProfile={selectedProfile} onCheckClick={handleCheckClick} />
+                    </Grid>
+                </Grid>
+            </SoftBox>
+
             <SoftBox mt={5} mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
@@ -360,18 +336,6 @@ function Beach() {
                                 {/* {markers2.length > 0 ? markers2 : <></>} */}
                             </Map>
                         </Card>
-                    </Grid>
-                </Grid>
-            </SoftBox>
-
-            <SoftBox mb={3}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} lg={12}>
-                        {/* Pass the selected profile data to the BuildByDevelopers component */}
-                        <BuildByDevelopers
-                            selectedProfile={selectedProfile}
-                            onCheckClick={handleCheckClick}
-                        />
                     </Grid>
                 </Grid>
             </SoftBox>

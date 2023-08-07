@@ -45,18 +45,18 @@ import CardMedia from "@mui/material/CardMedia";
     
     useEffect(() => {
       // 각각의 API를 호출하여 데이터를 가져옵니다.
-      axios.get(`${process.env.REACT_APP_API_URL}/beach-weather/1`)
+      axios.get(`${process.env.REACT_APP_API_URL}/beach-weather/${beach_id}`)
           .then((res) => setBeachWeatherData(res.data))
           .catch((error) => console.log(error));
 
-      axios.get(`${process.env.REACT_APP_API_URL}/beach-infra/1`)
+      axios.get(`${process.env.REACT_APP_API_URL}/beach-infra/${beach_id}`)
           .then((res) => setBeachInfraData(res.data))
           .catch((error) => console.log(error));
 
-      axios.get(`${process.env.REACT_APP_API_URL}/beach-scores/1`)
+      axios.get(`${process.env.REACT_APP_API_URL}/beach-scores/${beach_id}`)
           .then((res) => setBeachScoresData(res.data))
           .catch((error) => console.log(error));
-  }, []);
+  }, [beach_id]);
 
   // const handleWeatherCardClick = () => {
   //   setShowWeatherCard(!showWeatherCard);
