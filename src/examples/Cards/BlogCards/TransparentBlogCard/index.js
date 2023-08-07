@@ -22,7 +22,6 @@ import PropTypes from "prop-types";
 // @mui material components
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-import Icon from "@mui/material/Icon";
 import MuiLink from "@mui/material/Link";
 
 // Soft UI Dashboard React components
@@ -109,31 +108,7 @@ function TransparentBlogCard({ image, title, description, action }) {
             {description}
           </SoftTypography>
         </SoftBox>
-        {action.type === "internal" ? (
-          <Link to={action.route} sx={cardActionStyles}>
-            <SoftTypography
-              variant="body2"
-              color={action.color}
-              textTransform="capitalize"
-              component="span"
-            >
-              {action.label}
-              <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
-            </SoftTypography>
-          </Link>
-        ) : (
-          <MuiLink href={action.route} target="_blank" rel="noreferrer" sx={cardActionStyles}>
-            <SoftTypography
-              variant="body2"
-              color={action.color}
-              textTransform="capitalize"
-              component="span"
-            >
-              {action.label}
-              <Icon sx={{ fontWeight: "bold" }}>arrow_forward</Icon>
-            </SoftTypography>
-          </MuiLink>
-        )}
+        
       </SoftBox>
     </Card>
   );

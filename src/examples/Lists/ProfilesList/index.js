@@ -58,6 +58,7 @@ function ProfilesList({ title, profiles, loading }) {
                             onClick={action.click}
                             // data-name={name}
                             data-id={id}
+                            data-name={name}
                         >
                             {action.label}
                         </SoftButton>

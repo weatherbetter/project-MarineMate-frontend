@@ -54,122 +54,192 @@ import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
                       setBeachWeatherData(res.data);
                       setBeachDetail(res.data);
                   })
-                  .catch((error) => console.log(error));
+                  .catch((error) => {});
 
               axios
                   .get(`${process.env.REACT_APP_API_URL}/beach-infra/${beach_id}`)
                   .then((res) => {
                       setBeachInfraData(res.data);
-                      console.log(res.data);
                   })
-                  .catch((error) => console.log(error));
+                  .catch((error) => {
+                  });
 
               axios
                   .get(`${process.env.REACT_APP_API_URL}/beach-scores/${beach_id}`)
                   .then((res) => {
                       setBeachScoresData(res.data);
-                      console.log(res.data);
                   })
-                  .catch((error) => console.log(error));
+                  .catch((error) => {});
           }
       }, [beach_id]);
-
-      // const handleWeatherCardClick = () => {
-      //   setShowWeatherCard(!showWeatherCard);
-      // };
-
-      // const handleInfraCardClick = () => {
-      //   setShowInfraCard(!showInfraCard);
-      // };
-
-      // const handleScoresCardClick = () => {
-      //   setShowScoresCard(!showScoresCard);
-      // };
-      // const handleCheckClick = () => {
-      //   setShowProfileInfo(!showProfileInfo);
-      // };
-
-      // console.log(apiData); // You can access the API data using the 'apiData prop here
 
       return (
           <SoftBox mb={3}>
               <Grid container spacing={3}>
                   <Grid item xs={12} lg={6}>
-                      <ReportsBarChart
-                          title="active users"
-                          description={
-                              <>
-                                  (<strong>+23%</strong>) than last week
-                              </>
-                          }
-                          items={[
-                              {
-                                  icon: { color: "primary", component: "library_books" },
-                                  label: "샤워실",
-                                  progress: { content: "3", percentage: 3 * 10 },
-                              },
-                              {
-                                  icon: { color: "info", component: "touch_app" },
-                                  label: "화장실",
-                                  progress: { content: "0", percentage: 0 * 10 },
-                              },
-                              {
-                                  icon: { color: "warning", component: "payment" },
-                                  label: "탈의실",
-                                  progress: { content: "0", percentage: 0 * 10 },
-                              },
-                              {
-                                  icon: { color: "error", component: "extension" },
-                                  label: "분수대",
-                                  progress: { content: "1", percentage: 1 * 10 },
-                              },
-                              {
-                                  icon: { color: "error", component: "extension" },
-                                  label: "수돗가",
-                                  progress: { content: "0" },
-                              },
-                          ]}
-                      />
+                      {beachInfraData ? (
+                          <ReportsBarChart
+                              title="active users"
+                              description={
+                                  <>
+                                      (<strong>+23%</strong>) than last week
+                                  </>
+                              }
+                              items={[
+                                  {
+                                      icon: { color: "primary", component: "shower" },
+                                      label: "샤워실",
+                                      progress: { content: beachInfraData.beach_infra.shower_room },
+                                  },
+                                  {
+                                      icon: { color: "success", component: "wc" },
+                                      label: "화장실",
+                                      progress: { content: beachInfraData.beach_infra.toilet },
+                                  },
+                                  {
+                                      icon: { color: "warning", component: "checkroom" },
+                                      label: "탈의실",
+                                      progress: {
+                                          content: beachInfraData.beach_infra.dressing_room,
+                                      },
+                                  },
+                                  {
+                                      icon: { color: "error", component: "water" },
+                                      label: "분수대",
+                                      progress: { content: beachInfraData.beach_infra.watch_tower },
+                                  },
+                                  {
+                                      icon: { color: "info", component: "water_drop" },
+                                      label: "수돗가",
+                                      progress: { content: beachInfraData.beach_infra.tap_water },
+                                  },
+                              ]}
+                          />
+                      ) : (
+                          <ReportsBarChart
+                              title="active users"
+                              description={
+                                  <>
+                                      (<strong>+23%</strong>) than last week
+                                  </>
+                              }
+                              items={[
+                                  {
+                                      icon: { color: "primary", component: "shower" },
+                                      label: "샤워실",
+                                      progress: { content: 0 },
+                                  },
+                                  {
+                                      icon: { color: "success", component: "wc" },
+                                      label: "화장실",
+                                      progress: { content: 0 },
+                                  },
+                                  {
+                                      icon: { color: "warning", component: "checkroom" },
+                                      label: "탈의실",
+                                      progress: { content: 0 },
+                                  },
+                                  {
+                                      icon: { color: "error", component: "water" },
+                                      label: "분수대",
+                                      progress: { content: 0 },
+                                  },
+                                  {
+                                      icon: { color: "info", component: "water_drop" },
+                                      label: "수돗가",
+                                      progress: { content: 0 },
+                                  },
+                              ]}
+                          />
+                      )}
                   </Grid>
                   <Grid item xs={12} lg={6}>
-                      <ReportsBarChart
-                          title="active users"
-                          description={
-                              <>
-                                  (<strong>+23%</strong>) than last week
-                              </>
-                          }
-                          items={[
-                              {
-                                  icon: { color: "primary", component: "library_books" },
-                                  label: "샤워실",
-                                  progress: { content: "3", percentage: 3 * 10 },
-                              },
-                              {
-                                  icon: { color: "info", component: "touch_app" },
-                                  label: "화장실",
-                                  progress: { content: "0", percentage: 0 * 10 },
-                              },
-                              {
-                                  icon: { color: "warning", component: "payment" },
-                                  label: "탈의실",
-                                  progress: { content: "0", percentage: 0 * 10 },
-                              },
-                              {
-                                  icon: { color: "error", component: "extension" },
-                                  label: "분수대",
-                                  progress: { content: "1", percentage: 1 * 10 },
-                              },
-                              {
-                                  icon: { color: "error", component: "extension" },
-                                  label: "수돗가1",
-                                  progress: { content: "0" },
-                              },
-                          ]}
-                      />
+                      {beachScoresData ? (
+                          <ReportsBarChart
+                              title="active users"
+                              description={
+                                  <>
+                                      (<strong>+23%</strong>) than last week
+                                  </>
+                              }
+                              items={[
+                                  {
+                                      icon: { color: "info", component: "water_drop" },
+                                      label: "수질점수",
+                                      progress: {
+                                          content: beachScoresData.beach_score.water_score,
+                                      },
+                                  },
+                                  {
+                                      icon: { color: "success", component: "eco" },
+                                      label: "토양점수",
+                                      progress: {
+                                          content: beachScoresData.beach_score.soil_score,
+                                      },
+                                  },
+                                  {
+                                      icon: { color: "warning", component: "store" },
+                                      label: "시설점수",
+                                      progress: {
+                                          content: beachScoresData.beach_score.facility_score,
+                                      },
+                                  },
+                                  {
+                                      icon: { color: "primary", component: "waves" },
+                                      label: "해파리 점수",
+                                      progress: {
+                                          content: beachScoresData.jellyfish_score.jellyfish_score,
+                                      },
+                                  },
+                                  {
+                                      icon: { color: "info", component: "cloud" },
+                                      label: "강수량 점수",
+                                      progress: {
+                                          content: beachScoresData.rainfall_score.rain_score,
+                                      },
+                                  },
+                              ]}
+                          />
+                      ) : (
+                          <ReportsBarChart
+                              title="active users"
+                              description={
+                                  <>
+                                      (<strong>+23%</strong>) than last week
+                                  </>
+                              }
+                              items={[
+                                  {
+                                      icon: { color: "info", component: "water_drop" },
+                                      label: "수질점수",
+                                      progress: { content: "0" },
+                                  },
+                                  {
+                                      icon: { color: "success", component: "eco" },
+                                      label: "토양점수",
+                                      progress: { content: "0" },
+                                  },
+                                  {
+                                      icon: { color: "warning", component: "store" },
+                                      label: "시설점수",
+                                      progress: { content: "0" },
+                                  },
+                                  {
+                                      icon: { color: "primary", component: "waves" },
+                                      label: "해파리 점수",
+                                      progress: { content: "0" },
+                                  },
+                                  {
+                                      icon: { color: "info", component: "cloud" },
+                                      label: "강수량 점수",
+                                      progress: { content: "0" },
+                                  },
+                              ]}
+                          />
+                      )}
                   </Grid>
               </Grid>
-{/* 
+              {/* 
               <Grid container spacing={3}>
                   <Grid item xs={12} lg={6}>
                       <Card>
@@ -184,26 +254,6 @@ import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
                                           ].wind_direction
                                       }{" "}
                                       deg
-                                  </SoftTypography>
-                              </>
-                          )}
-                          <SoftTypography variant="h6">주변시설 정보 </SoftTypography>
-                          {beachInfraData && (
-                              <>
-                                  <SoftTypography variant="body2">
-                                      샤워장: {beachInfraData.beach_infra.shower_room}
-                                  </SoftTypography>
-                                  <SoftTypography variant="body2">
-                                      화장실: {beachInfraData.beach_infra.toilet}
-                                  </SoftTypography>
-                                  <SoftTypography variant="body2">
-                                      탈의실: {beachInfraData.beach_infra.dressing_room}
-                                  </SoftTypography>
-                                  <SoftTypography variant="body2">
-                                      망루대: {beachInfraData.beach_infra.watch_tower}
-                                  </SoftTypography>
-                                  <SoftTypography variant="body2">
-                                      공동수도: {beachInfraData.beach_infra.tap_water}
                                   </SoftTypography>
                               </>
                           )}

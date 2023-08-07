@@ -20,7 +20,6 @@ import Card from "@mui/material/Card";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import SoftBadge from "components/SoftBadge";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -38,11 +37,8 @@ import { Map, MapMarker, useMap } from "react-kakao-maps-sdk";
 import markerRed from "assets/marker_red.png";
 import markerGreen from "assets/marker_green.png";
 import markerYellow from "assets/marker_yellow.png";
-import markerBlue from "assets/marker_blue.png";
 import jellyfish from "./data/jellyfish.js";
-import DotLoader from "react-spinners/DotLoader";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
-import { Line } from "react-chartjs-2";
 
 function recommendBeachList(response, func) {
     const beachList = response.map((data, index) => {
@@ -71,11 +67,11 @@ function Beach() {
         "Safety Center": 0,
         Pumbulance: 0,
     });
-    // useEffect(() => {
-    //         axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
-    //         .then((res) => {setJellyfishScore(res.data)})
-    //         .catch((error) => {});
-    // }, []);
+    useEffect(() => {
+            axios.get(`${process.env.REACT_APP_API_URL}/jellyfish`)
+            .then((res) => {setJellyfishScore(res.data)})
+            .catch((error) => {});
+    }, []);
 
     const guideSelect = {
         beach_name: "지역을 선택해주세요.",
@@ -95,7 +91,6 @@ function Beach() {
 
     const handleBeach = (e) => {
         setBeachId(e.target.dataset.id);
-        // axios 동작 추가를 Child Component에서
     };
 
     const profilesListData = recommendBeachList(recommendBeach, handleBeach);
@@ -105,32 +100,20 @@ function Beach() {
     const [beachDetail, setBeachDetail] = useState(null);
 
     // 인명구조장비함
-    // useEffect(() => {
-    //     axios
-    //         .get(`${process.env.REACT_APP_API_URL}/equipment`)
-    //         .then((res) => {
-    //             setData2(res.data);
-    //         })
-    //         .catch((error) => console.log(error));
-    // }, []);
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/equipment`)
+            .then((res) => {
+                setData2(res.data);
+            })
+            .catch((error) => {});
+    }, []);
 
-    // useEffect(() => {
-    //     setLocationSpecific(data);
-    // }, [data])
-    // 마커 정보를 사용하여 지도에 마커 표시 등의 작업 수행
-    // ...
     const locations_specific = jellyfish; // const locations_specific = data;//
     const locations_specific2 = data2;
 
     // // State to hold the selected profile data
     const [selectedProfile, setSelectedProfile] = useState(null);
-
-    // // 클릭 이벤트 처리 함수
-    // const handleCheckClick = (profile) => {
-    //     console.log(profile)
-    //     // Toggle the visibility of ProfileInfoCard
-    //     setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
-    // };
 
     const EventMarkerContainer = ({ position, content, markerSrc }) => {
         const map = useMap();
@@ -197,29 +180,9 @@ function Beach() {
         <MapMarker
             key={index}
             position={{ lat: location1.equipment_long, lng: location1.equipment_lat }}
-            // image={{
-            //     src: markerBlue,
-            //     size: {
-            //         width: 24,
-            //         height: 35,
-            //     },
-            // }}
             title={location1.spot}
         />
     ));
-
-    // const spaceMarkers = space.map((loc) => {
-    //     console.log(loc);
-    //     return (
-    //         <EventMarkerContainer
-    //             key={`EventMarkerContainer-${loc.latlng.lat}-${loc.latlng.lng}`}
-    //             position={loc.latlng}
-    //             content={loc.title}
-    //             markerSrc={markerSrc}
-    //         />
-    //     );
-    // });
-    // return spaceMarkers;
 
     useEffect(() => {}, []);
 
@@ -234,14 +197,32 @@ function Beach() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6} xl={7}>
                         <Card>
-                            <Map
-                                center={{ lat: 36, lng: 128.043 }}
-                                style={{ width: "100%", height: "500px" }}
-                                level={13}
-                            >
-                                {markers}
-                                {/* {markers.length > 0 && markers} */}
-                            </Map>
+                            <SoftBox pt={2} px={2}>
+                                <SoftTypography
+                                    variant="h6"
+                                    fontWeight="medium"
+                                    textTransform="capitalize"
+                                >
+                                    {"해파리 출현 예측 지도"}
+                                </SoftTypography>
+                            </SoftBox>
+                            <SoftBox p={2}>
+                                <SoftBox
+                                    component="ul"
+                                    display="flex"
+                                    flexDirection="column"
+                                    p={0}
+                                    m={0}
+                                >
+                                    <Map
+                                        center={{ lat: 36, lng: 128.043 }}
+                                        style={{ width: "100%", height: "500px" }}
+                                        level={13}
+                                    >
+                                        {markers}
+                                    </Map>
+                                </SoftBox>
+                            </SoftBox>
                         </Card>
                     </Grid>
                     <Grid item xs={12} md={6} xl={5}>
@@ -354,26 +335,40 @@ function Beach() {
                             beach_id={beach_id}
                             selectedProfile={selectedProfile}
                             setBeachDetail={setBeachDetail}
-                            // onCheckClick={handleCheckClick}
                         />
                     </Grid>
                 </Grid>
             </SoftBox>
-
             <SoftBox mt={5} mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
                         <Card>
-                            <Map
-                                center={{ lat: 36, lng: 128.043 }}
-                                style={{ width: "100%", height: "600px" }}
-                                level={13}
-                            >
-                                {markers2}
-                                {/* 조건부 렌더링을 이용하여 마커 표시 */}
-                                {/* {markers2.length > 0 && markers2 } */}
-                                {/* {markers2.length > 0 ? markers2 : <></>} */}
-                            </Map>
+                            <SoftBox pt={2} px={2}>
+                                <SoftTypography
+                                    variant="h6"
+                                    fontWeight="medium"
+                                    textTransform="capitalize"
+                                >
+                                    {"인명구조 장비함 위치"}
+                                </SoftTypography>
+                            </SoftBox>
+                            <SoftBox p={2}>
+                                <SoftBox
+                                    component="ul"
+                                    display="flex"
+                                    flexDirection="column"
+                                    p={0}
+                                    m={0}
+                                >
+                                    <Map
+                                        center={{ lat: 36, lng: 128.043 }}
+                                        style={{ width: "100%", height: "600px" }}
+                                        level={13}
+                                    >
+                                        {markers2}
+                                    </Map>
+                                </SoftBox>
+                            </SoftBox>
                         </Card>
                     </Grid>
                 </Grid>

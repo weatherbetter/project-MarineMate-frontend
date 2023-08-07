@@ -35,7 +35,6 @@ import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import beach_header from "assets/images/beach_header.jpg";
 
 function Header(props) {
     const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -110,7 +109,7 @@ function Header(props) {
                         `${linearGradient(
                             rgba(gradients.info.main, 0),
                             rgba(gradients.info.state, 0)
-                        )}, url(${beach_header})`,
+                        )}, url(${process.env.REACT_APP_S3_IMG}/beach_header.jpg)`,
                     backgroundSize: "cover",
                     backgroundPosition: "50%",
                     overflow: "hidden",
