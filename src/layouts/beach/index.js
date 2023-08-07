@@ -85,8 +85,14 @@ function Beach() {
         guideSelect,
         guideSelect,
     ]);
+
     const [loading, setLoading] = React.useState(false);
+
+    const [beach_id, setBeachId] = useState(null);
+
     const handleBeach = (e) => {
+        const clickedBeachId = e.target.dataset.id;
+        setBeachId(clickedBeachId);
         // console.log(e.target.dataset.name);
         // axios 동작 추가
     };
@@ -144,6 +150,7 @@ function Beach() {
 
     // // 클릭 이벤트 처리 함수
     const handleCheckClick = (profile) => {
+        console.log(profile)
         // Toggle the visibility of ProfileInfoCard
         setSelectedProfile((prevProfile) => (prevProfile !== profile ? profile : null));
     };
@@ -315,7 +322,8 @@ function Beach() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} lg={12}>
                         {/* Pass the selected profile data to the BuildByDevelopers component */}
-                        <BuildByDevelopers beach_id={beach_id} 
+
+                        <BuildByDevelopers beach_id = {beach_id}
                         selectedProfile={selectedProfile} onCheckClick={handleCheckClick} />
                     </Grid>
                 </Grid>

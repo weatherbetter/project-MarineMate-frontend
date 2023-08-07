@@ -37,7 +37,8 @@ import CardMedia from "@mui/material/CardMedia";
 //   const handleCheckClick = () => {
 //     setShowProfileInfo(!showProfileInfo);
 //   };
-  function BuildByDevelopers({ selectedProfile, onCheckClick }) {
+  function BuildByDevelopers({ selectedProfile, beach_id, onCheckClick }) {
+    
     const [beachWeatherData, setBeachWeatherData] = useState(null);
     const [beachInfraData, setBeachInfraData] = useState(null);
     const [beachScoresData, setBeachScoresData] = useState(null);
@@ -45,6 +46,7 @@ import CardMedia from "@mui/material/CardMedia";
     
     useEffect(() => {
       // 각각의 API를 호출하여 데이터를 가져옵니다.
+      if (beach_id) {
       axios.get(`${process.env.REACT_APP_API_URL}/beach-weather/${beach_id}`)
           .then((res) => setBeachWeatherData(res.data))
           .catch((error) => console.log(error));
@@ -56,6 +58,7 @@ import CardMedia from "@mui/material/CardMedia";
       axios.get(`${process.env.REACT_APP_API_URL}/beach-scores/${beach_id}`)
           .then((res) => setBeachScoresData(res.data))
           .catch((error) => console.log(error));
+    }
   }, [beach_id]);
 
   // const handleWeatherCardClick = () => {
@@ -81,9 +84,9 @@ import CardMedia from "@mui/material/CardMedia";
         <SoftBox p={2}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={6}>
-              {showProfileInfo && selectedProfile ? (
+              {beach_id && selectedProfile ? (
                 <Card>
-                  <SoftTypography variant="h6">기상예보</SoftTypography>
+                  <SoftTypography variant="h6">기상예보 {beach_id} </SoftTypography>
                   <SoftTypography variant="body2">
                     풍속: {beachWeatherData.wind_speed}
                   </SoftTypography>
@@ -96,7 +99,7 @@ import CardMedia from "@mui/material/CardMedia";
                   <SoftTypography variant="body2">
                     풍향: {beachWeatherData.wind_direction}
                   </SoftTypography>
-                  <SoftTypography variant="h6">주변시설 정보</SoftTypography>
+                  <SoftTypography variant="h6">주변시설 정보 {beach_id} </SoftTypography>
                   <SoftTypography variant="body2">
                     샤워장: {beachInfraData.shower_room}
                   </SoftTypography>
@@ -112,7 +115,7 @@ import CardMedia from "@mui/material/CardMedia";
                   <SoftTypography variant="body2">
                     공동수도: {beachInfraData.tap_water}
                   </SoftTypography>
-                  <SoftTypography variant="h6">해수욕장 점수</SoftTypography>
+                  <SoftTypography variant="h6">해수욕장 점수 {beach_id} </SoftTypography>
                   <SoftTypography variant="body2">
                     수질점수: {beachInfraData.water_score}
                   </SoftTypography>
